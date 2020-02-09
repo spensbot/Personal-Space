@@ -1,0 +1,29 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ScreenClamp : MonoBehaviour
+{
+    Rigidbody2D rb;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        
+    }
+
+    private void LateUpdate()
+    {
+        clampRigidBodyToScreenBounds(rb);
+    }
+
+    public void clampRigidBodyToScreenBounds(Rigidbody2D rb)
+    {
+        Vector2 screenBounds = GameManager.Instance.screenBounds;
+        Vector2 newPosition;
+        newPosition.x = Mathf.Clamp(rb.position.x, -screenBounds.x, screenBounds.x);
+        newPosition.y = Mathf.Clamp(rb.position.y, -screenBounds.y, screenBounds.y);
+        rb.position = newPosition;
+    }
+}
