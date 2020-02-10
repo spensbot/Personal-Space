@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9672fa9dff9164e2e893912fbea969c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosion: {fileID: 3203286951437704418, guid: 28ddd40334fa84c9284f8b6ecc1433fa,
+  explosion: {fileID: 3203286951437704444, guid: 28ddd40334fa84c9284f8b6ecc1433fa,
     type: 3}
   rotationSpeed: 50
 --- !u!50 &2760790672593414546
@@ -158,8 +158,8 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
+  m_UseAutoMass: 1
+  m_Mass: 0.51995695
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0

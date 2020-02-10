@@ -28,6 +28,6 @@ public class EnemyController : MonoBehaviour
     public void Die()
     {
         EventManager.NotifyEnemyDied();
-        Destroy(this);
+        Destroy(this.gameObject);
     }
 }

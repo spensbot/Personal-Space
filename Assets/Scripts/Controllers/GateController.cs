@@ -24,8 +24,8 @@ public class GateController : MonoBehaviour
         {
             Vector2 collisionPoint = collision.GetContact(0).point;
             float collisionDistance = (collisionPoint - rb.position).magnitude;
-            GameObject explosionInstance = Instantiate(explosion, rb.transform);
-            Destroy(this);
+            GameObject explosionInstance = Instantiate(explosion, rb.position, Quaternion.identity) as GameObject;
+            Destroy(this.gameObject);
         }
     }
 }

@@ -4,32 +4,43 @@ using UnityEngine;
 
 public class SpawnManager : Singleton<SpawnManager>
 {
-    [SerializeField] GameObject enemy;
     [SerializeField] GameObject gate;
+    [SerializeField] GameObject foreshadow;
     [SerializeField] float enemySpawnTime;
     [SerializeField] float gateSpawnTime;
     [SerializeField] PlayerController player;
 
     List<GameObject> enemies;
     List<GameObject> gates;
+    List<GameObject> foreshadows;
 
-    // Start is called before the first frame update
     void Start()
     {
         InvokeRepeating("SpawnEnemy", 0, enemySpawnTime);
         InvokeRepeating("SpawnGate", 0, gateSpawnTime);
+        enemies = new List<GameObject>();
+        gates = new List<GameObject>();
+        foreshadows = new List<GameObject>();
+    }
+
+    void spawnForeshadow(float secondsToEnemy)
+    {
+
     }
 
     void SpawnEnemy()
     {
         Vector3 enemySpawnPoint = GetRandomPointAlongRect(GameManager.Instance.screenBounds);
-        enemies.Add(Instantiate(enemy, enemySpawnPoint, Quaternion.identity));
+        GameObject enemyInstance = Instantiate(enemy, enemySpawnPoint, Quaternion.identity) as GameObject;
+        Debug.Log(enemyInstance);
+        enemies.Add(enemyInstance);
     }
 
     void SpawnGate()
     {
         Vector3 gateSpawnPoint = GetRandomPointInsideRect(GameManager.Instance.screenBounds);
-        gates.Add(Instantiate(gate, gateSpawnPoint, Quaternion.identity));
+        GameObject gateInstance = Instantiate(gate, gateSpawnPoint, Quaternion.identity) as GameObject;
+        gates.Add(gateInstance);
     }
 
     void SpawnPlayer()
@@ -40,6 +51,8 @@ public class SpawnManager : Singleton<SpawnManager>
     public void resetGame()
     {
         player.resetPosition();
+        clearList(enemies);
+        clearList(gates);
     }
 
     Vector2 GetRandomPointAlongRect(Vector2 bounds)
@@ -78,5 +91,14 @@ public class SpawnManager : Singleton<SpawnManager>
         {
             return 1f;
         }
+    }
+
+    void clearList(List<GameObject> list)
+    {
+        foreach (GameObject obj in list)
+        {
+            Destroy(obj);
+        }
+        list.Clear();
     }
 }

@@ -12,6 +12,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] Text highScoreText;
     [SerializeField] GameObject bootScreen;
     [SerializeField] GameObject hud;
+    [SerializeField] SpawnManager spawnManager;
     public Vector2 screenBounds { get; private set; }
     int highScore;
     int score;
@@ -40,9 +41,14 @@ public class GameManager : Singleton<GameManager>
 
     void OnEnemyDied()
     {
-        score += 1;
-        scoreText.fontSize = GetScoreFontSize(score);
+        updateScore(score + 1);
+    }
+
+    void updateScore(int newScore)
+    {
+        score = newScore;
         scoreText.text = $"{score}";
+        scoreText.fontSize = GetScoreFontSize(score);
     }
 
     void OnPlayerDied()
@@ -51,7 +57,6 @@ public class GameManager : Singleton<GameManager>
         {
             highScore = score;
         }
-        score = 0;
         TransitionToState(GameStates.BOOT);
     }
 
@@ -75,17 +80,16 @@ public class GameManager : Singleton<GameManager>
         switch (state)
         {
             case GameStates.BOOT:
+                updateScore(0);
                 Time.timeScale = 0.0f;
                 bootScreen.gameObject.SetActive(true);
-                hud.gameObject.SetActive(false);
                 highScoreText.text = $"Your High Score: {highScore}";
                 playButtonText.text = GetPlayButtonText(highScore);
                 break;
             case GameStates.PLAY:
                 Time.timeScale = 1.0f;
                 bootScreen.gameObject.SetActive(false);
-                hud.gameObject.SetActive(true);
-                player.resetPosition();
+                spawnManager.resetGame();
                 break;
         }
     }

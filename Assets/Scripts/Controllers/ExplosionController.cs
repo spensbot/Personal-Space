@@ -16,11 +16,18 @@ public class ExplosionController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Explosion Instantiated");
         pSystem = GetComponent<ParticleSystem>();
         explosionCollider = GetComponent<CircleCollider2D>();
         pSystem.Play();
         float totalDuration = pSystem.main.duration + pSystem.main.startLifetime.constantMax;
         Destroy(this, totalDuration);
+        Invoke("DisableExplosionCollider", 0.2f);
+    }
+
+    void DisableExplosionCollider()
+    {
+        explosionCollider.enabled = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

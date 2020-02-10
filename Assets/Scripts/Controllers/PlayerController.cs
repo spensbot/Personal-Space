@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.collider.CompareTag(Strings.Tags.enemy))
         {
-            //Die();
+            Die();
         }
     }
 

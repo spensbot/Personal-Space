@@ -48,3 +48,4 @@ MonoBehaviour:
   highScoreText: {fileID: 0}
   bootScreen: {fileID: 0}
   hud: {fileID: 0}
+  spawnManager: {fileID: 0}
