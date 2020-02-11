@@ -3,35 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum GameStates { BOOT, PLAY }
+public enum GameState { BOOT, PLAY }
 
 public class GameManager : Singleton<GameManager>
 {
-    [SerializeField] Text scoreText;
-    [SerializeField] Text playButtonText;
-    [SerializeField] Text highScoreText;
-    [SerializeField] GameObject bootScreen;
-    [SerializeField] GameObject hud;
     [SerializeField] SpawnManager spawnManager;
-    public Vector2 screenBounds { get; private set; }
-    int highScore;
-    int score;
-    GameStates currentState;
 
+    public Vector2 screenBounds { get; private set; }
+
+    int score;
+    GameState currentState;
+    SaveState activeSave;
 
 //----------------     LIFECYCLE METHODS     ---------------
 
     void Start()
     {
+        activeSave = SaveManager.Load();
+        updateHighScore(activeSave.highScore);
+
         DontDestroyOnLoad(this);
+        
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0f));
         EventManager.EnemyDied += OnEnemyDied;
         EventManager.PlayerDied += OnPlayerDied;
-        TransitionToState(GameStates.BOOT);
+        TransitionToState(GameState.BOOT);
+        
     }
 
     protected override void OnDestroy()
     {
+        base.OnDestroy();
         EventManager.EnemyDied -= OnEnemyDied;
         EventManager.PlayerDied -= OnPlayerDied;
     }
@@ -44,95 +46,68 @@ public class GameManager : Singleton<GameManager>
         updateScore(score + 1);
     }
 
-    void updateScore(int newScore)
-    {
-        score = newScore;
-        scoreText.text = $"{score}";
-        scoreText.fontSize = GetScoreFontSize(score);
-    }
-
     void OnPlayerDied()
     {
-        if (score > highScore)
+        if (score > activeSave.highScore)
         {
-            highScore = score;
+            updateHighScore(score);
         }
-        TransitionToState(GameStates.BOOT);
+        TransitionToState(GameState.BOOT);
     }
 
     public void StartGame()
     {
-        TransitionToState(GameStates.PLAY);
+        TransitionToState(GameState.PLAY);
+    }
+
+    void updateScore(int newScore)
+    {
+        score = newScore;
+        EventManager.NotifyScoreChange(score);
+    }
+
+    void updateHighScore(int newHighScore)
+    {
+        activeSave.highScore = newHighScore;
+        SaveManager.Save(activeSave);
+        EventManager.NotifyHighScoreChange(newHighScore);
     }
 
 
-    //--------------     STATE MANAGEMENT     ------------------
+//--------------     STATE MANAGEMENT     ------------------
 
-    public void TransitionToState(GameStates newState)
+    void TransitionToState(GameState newState)
     {
         ExitState(currentState);
         EnterState(newState);
         currentState = newState;
     }
 
-    void EnterState(GameStates state)
+    void EnterState(GameState state)
     {
+        EventManager.NotifyEnterState(state);
         switch (state)
         {
-            case GameStates.BOOT:
+            case GameState.BOOT:
                 updateScore(0);
                 Time.timeScale = 0.0f;
-                bootScreen.gameObject.SetActive(true);
-                highScoreText.text = $"Your High Score: {highScore}";
-                playButtonText.text = GetPlayButtonText(highScore);
                 break;
-            case GameStates.PLAY:
+            case GameState.PLAY:
                 Time.timeScale = 1.0f;
-                bootScreen.gameObject.SetActive(false);
-                spawnManager.resetGame();
                 break;
         }
     }
 
-    //Use EnterState if possible
-    void ExitState(GameStates state)
+    //Use EnterState when possible
+    void ExitState(GameState state)
     {
+        EventManager.NotifyExitState(state);
         switch (state)
         {
-            case GameStates.BOOT:
+            case GameState.BOOT:
                 break;
-            case GameStates.PLAY:
+            case GameState.PLAY:
                 break;
         }
-    }
-
-
-    string GetPlayButtonText(int score)
-    {
-        if (score > 100)
-        {
-            return "It's Going Down For Real";
-        }
-        else if (score > 20)
-        {
-            return "If I Don't Stop These Guys From Taking My Personal Space, Who Will?";
-        }
-        else if (score > 10)
-        {
-            return "I CAN DO BETTER!";
-        }
-        else if (score > 0)
-        {
-            return "Ok, I'm Getting It Now";
-        }
-        else
-        {
-            return "Get Started";
-        }
-    }
-
-    int GetScoreFontSize(int score)
-    {
-        return 50 + (score);
     }
 }

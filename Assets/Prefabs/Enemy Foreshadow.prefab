@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 7bf5e8ca830834e7ea6ee462083f3d18, type: 3}
-  m_Color: {r: 0.9529412, g: 0.6784842, b: 0.45490196, a: 1}
+  m_Color: {r: 0.9339623, g: 0.44495374, b: 0.7645421, a: 0.53333336}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -96,3 +96,5 @@ MonoBehaviour:
   enemy: {fileID: 9147930991160514237, guid: 1e503fd86668f4248a4309477c74195c, type: 3}
   enemyEntryEffect: {fileID: 2928376894469564232, guid: 5e62ff0b3bebe4cbca0b963ddb05538a,
     type: 3}
+  secondsToEnemy: 0
+  enemies: []

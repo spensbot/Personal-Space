@@ -43,11 +43,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7feaddcd9be2e4cf79cfb1bccdc4e13a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 9147930991160514237, guid: 1e503fd86668f4248a4309477c74195c, type: 3}
   gate: {fileID: 6621911578435236271, guid: 9882fc5daa72f4e708a1e0d0b7b5fc4c, type: 3}
   foreshadow: {fileID: 7724010801642997075, guid: 6cb39ac76fd9a438a8cc12623fde60bc,
     type: 3}
-  enemySpawnTime: 1
-  gateSpawnTime: 5
   player: {fileID: 0}
-  foreshadowTime: 3
+  enemyStartSpawnTime: 1.51
+  enemySpawnTimeMultiplier: 0.9903
+  gateSpawnTime: 5

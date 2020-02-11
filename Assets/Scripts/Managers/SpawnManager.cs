@@ -4,36 +4,60 @@ using UnityEngine;
 
 public class SpawnManager : Singleton<SpawnManager>
 {
+    [SerializeField] [Range(1f, 5f)] const float defaultForeshadow = 3f;
+
     [SerializeField] GameObject gate;
     [SerializeField] GameObject foreshadow;
-    [SerializeField] float enemySpawnTime;
-    [SerializeField] float gateSpawnTime;
     [SerializeField] PlayerController player;
 
     List<GameObject> enemies;
     List<GameObject> gates;
     List<GameObject> foreshadows;
 
+    float secondsToNextGate = 0f;
+    float secondsToNextEnemy = 0f;
+
     void Start()
     {
-        InvokeRepeating("SpawnEnemy", 0, enemySpawnTime);
-        InvokeRepeating("SpawnGate", 0, gateSpawnTime);
         enemies = new List<GameObject>();
         gates = new List<GameObject>();
         foreshadows = new List<GameObject>();
+        EventManager.EnterState += EnterState;
     }
 
-    void spawnForeshadow(float secondsToEnemy)
+    protected override void OnDestroy()
     {
-
+        base.OnDestroy();
+        EventManager.EnterState -= EnterState;
     }
 
-    void SpawnEnemy()
+    void Update()
     {
-        Vector3 enemySpawnPoint = GetRandomPointAlongRect(GameManager.Instance.screenBounds);
-        GameObject enemyInstance = Instantiate(enemy, enemySpawnPoint, Quaternion.identity) as GameObject;
-        Debug.Log(enemyInstance);
-        enemies.Add(enemyInstance);
+        float dt = Time.deltaTime;
+        secondsToNextEnemy -= dt;
+        secondsToNextGate -= dt;
+
+        if(secondsToNextGate < 0)
+        {
+            SpawnGate();
+            secondsToNextGate = DifficultyManager.Instance.gateSpawnTime;
+        }
+
+        if(secondsToNextEnemy < 0)
+        {
+            SpawnForeshadow();
+            secondsToNextEnemy = DifficultyManager.Instance.enemySpawnTime;
+        }
+    }
+
+    void SpawnForeshadow(float secondsToEnemy = defaultForeshadow)
+    {
+        Vector3 spawnPoint = GetRandomPointAlongRect(GameManager.Instance.screenBounds);
+        GameObject foreshadowInstance = Instantiate(foreshadow, spawnPoint, Quaternion.identity);
+        ForeshadowController foreshadowController = foreshadowInstance.GetComponent<ForeshadowController>();
+        foreshadowController.secondsToEnemy = secondsToEnemy;
+        foreshadowController.enemies = enemies;
+        foreshadows.Add(foreshadowInstance);
     }
 
     void SpawnGate()
@@ -43,16 +67,26 @@ public class SpawnManager : Singleton<SpawnManager>
         gates.Add(gateInstance);
     }
 
-    void SpawnPlayer()
+    private void EnterState(GameState state)
     {
-        
-    }
-
-    public void resetGame()
-    {
-        player.resetPosition();
-        clearList(enemies);
-        clearList(gates);
+        switch (state)
+        {
+            case GameState.BOOT:
+                //Reset player position and clear enemies/gates
+                player.resetPosition();
+                clearList(enemies);
+                clearList(gates);
+                clearList(foreshadows);
+                break;
+            case GameState.PLAY:
+                //Now add some foreshadows with a shorter fuse so the player doesn't have to wait for enemies.
+                SpawnForeshadow(3f);
+                SpawnForeshadow(2f);
+                SpawnForeshadow(1f);
+                SpawnForeshadow(0f);
+                SpawnGate();
+                break;
+        }
     }
 
     Vector2 GetRandomPointAlongRect(Vector2 bounds)

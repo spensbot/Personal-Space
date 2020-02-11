@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2928376894469564247}
   - component: {fileID: 2928376894469564245}
   - component: {fileID: 2928376894469564246}
+  - component: {fileID: 1450756483902062513}
   m_Layer: 0
   m_Name: Enemy Entry Effect
   m_TagString: Untagged
@@ -1304,7 +1305,7 @@ ParticleSystem:
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 0.5518868, b: 0.92744833, a: 1}
-        key1: {r: 0.9528302, g: 0.9355213, b: 0.4179868, a: 0.32156864}
+        key1: {r: 0.9529412, g: 0.41960788, b: 0.84929967, a: 0.32156864}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -4754,3 +4755,16 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &1450756483902062513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2928376894469564232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 520ed24afbe2c4675bfc9dd56dc1fcea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 1

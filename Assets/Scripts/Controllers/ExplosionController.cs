@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ExplosionController : MonoBehaviour
 {
-
     ParticleSystem pSystem;
     CircleCollider2D explosionCollider;
 
@@ -16,12 +15,11 @@ public class ExplosionController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Explosion Instantiated");
         pSystem = GetComponent<ParticleSystem>();
         explosionCollider = GetComponent<CircleCollider2D>();
         pSystem.Play();
         float totalDuration = pSystem.main.duration + pSystem.main.startLifetime.constantMax;
-        Destroy(this, totalDuration);
+        Destroy(this.gameObject, totalDuration);
         Invoke("DisableExplosionCollider", 0.2f);
     }
 

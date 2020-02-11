@@ -1,36 +1,37 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Newtonsoft.Json;
+using System.IO;
 
-public struct SaveData
+public class SaveState
 {
-    public int highScore;
+    public int highScore = 0;
 }
 
-public class SaveManager : MonoBehaviour
+public class SaveManager
 {
-    string saveFileName = "save0";
+    private static readonly string fileName = "save.json";
 
-    // Start is called before the first frame update
-    void Start()
+    public static void Save(SaveState saveState)
     {
-        
+        string jsonString = JsonConvert.SerializeObject(saveState, Formatting.Indented);
+        File.WriteAllText(SavePath(), jsonString);
     }
 
-    // Update is called once per frame
-    void Update()
+    public static SaveState Load()
     {
-        
+        if (File.Exists(SavePath()))
+        {
+            string jsonString = File.ReadAllText(SavePath());
+            return JsonConvert.DeserializeObject<SaveState>(jsonString);
+        }
+        else
+        {
+            return new SaveState();
+        }
     }
 
-    public void SaveGame(SaveData saveData)
+    private static string SavePath()
     {
-
+        return Path.Combine(Application.persistentDataPath, fileName);
     }
-
-    //public SaveData LoadGame()
-    //{
-
-    //}
 }
