@@ -10,18 +10,11 @@ public class SpawnManager : Singleton<SpawnManager>
     [SerializeField] GameObject foreshadow;
     [SerializeField] PlayerController player;
 
-    List<GameObject> enemies;
-    List<GameObject> gates;
-    List<GameObject> foreshadows;
-
     float secondsToNextGate = 0f;
     float secondsToNextEnemy = 0f;
 
     void Start()
     {
-        enemies = new List<GameObject>();
-        gates = new List<GameObject>();
-        foreshadows = new List<GameObject>();
         EventManager.EnterState += EnterState;
     }
 
@@ -52,19 +45,19 @@ public class SpawnManager : Singleton<SpawnManager>
 
     void SpawnForeshadow(float secondsToEnemy = defaultForeshadow)
     {
-        Vector3 spawnPoint = GetRandomPointAlongRect(GameManager.Instance.screenBounds);
-        GameObject foreshadowInstance = Instantiate(foreshadow, spawnPoint, Quaternion.identity);
-        ForeshadowController foreshadowController = foreshadowInstance.GetComponent<ForeshadowController>();
-        foreshadowController.secondsToEnemy = secondsToEnemy;
-        foreshadowController.enemies = enemies;
-        foreshadows.Add(foreshadowInstance);
+        if (DebugManager.Instance.spawnEnemies)
+        {
+            Vector3 spawnPoint = GetRandomPointAlongRect(GameManager.Instance.screenBounds);
+            GameObject foreshadowInstance = Instantiate(foreshadow, spawnPoint, Quaternion.identity);
+            ForeshadowController foreshadowController = foreshadowInstance.GetComponent<ForeshadowController>();
+            foreshadowController.secondsToEnemy = secondsToEnemy;
+        }
     }
 
     void SpawnGate()
     {
         Vector3 gateSpawnPoint = GetRandomPointInsideRect(GameManager.Instance.screenBounds);
         GameObject gateInstance = Instantiate(gate, gateSpawnPoint, Quaternion.identity) as GameObject;
-        gates.Add(gateInstance);
     }
 
     private void EnterState(GameState state)
@@ -72,19 +65,13 @@ public class SpawnManager : Singleton<SpawnManager>
         switch (state)
         {
             case GameState.BOOT:
-                //Reset player position and clear enemies/gates
+                //Reset player position and clear enemies/gates/etc.
                 player.resetPosition();
-                clearList(enemies);
-                clearList(gates);
-                clearList(foreshadows);
                 break;
             case GameState.PLAY:
                 //Now add some foreshadows with a shorter fuse so the player doesn't have to wait for enemies.
-                SpawnForeshadow(3f);
-                SpawnForeshadow(2f);
-                SpawnForeshadow(1f);
+                DestroyAllInstantiatables();
                 SpawnForeshadow(0f);
-                SpawnGate();
                 break;
         }
     }
@@ -127,12 +114,12 @@ public class SpawnManager : Singleton<SpawnManager>
         }
     }
 
-    void clearList(List<GameObject> list)
+    void DestroyAllInstantiatables()
     {
-        foreach (GameObject obj in list)
-        {
-            Destroy(obj);
-        }
-        list.Clear();
+        EnemyController.DestroyAll();
+        ForeshadowController.DestroyAll();
+        GateController.DestroyAll();
+        ExplosionController.DestroyAll();
+        SelfDestruct.DestroyAll();
     }
 }

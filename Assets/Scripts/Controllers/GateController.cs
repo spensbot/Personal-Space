@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GateController : MonoBehaviour
+public class GateController : Trackable
 {
     [SerializeField] GameObject explosion;
     [SerializeField] float rotationSpeed = 50; //Degrees per second
+    [SerializeField] float maxCollisionDistance = 1.3f;
     Rigidbody2D rb;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -22,9 +24,13 @@ public class GateController : MonoBehaviour
     {
         if (collision.collider.gameObject.CompareTag(Strings.Tags.player))
         {
+            GameObject explosionInstance = Instantiate(explosion, rb.position, Quaternion.Euler(0,0,rb.rotation)) as GameObject;
+            ExplosionController explosionController = explosionInstance.GetComponent<ExplosionController>();
+
             Vector2 collisionPoint = collision.GetContact(0).point;
             float collisionDistance = (collisionPoint - rb.position).magnitude;
-            GameObject explosionInstance = Instantiate(explosion, rb.position, Quaternion.identity) as GameObject;
+            float explosionMagnitude = 1f - collisionDistance / maxCollisionDistance;
+            explosionController.SetMagnitude(explosionMagnitude);
             Destroy(this.gameObject);
         }
     }

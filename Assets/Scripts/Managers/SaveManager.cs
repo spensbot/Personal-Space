@@ -5,6 +5,7 @@ using System.IO;
 public class SaveState
 {
     public int highScore = 0;
+    public float totalPlayTime = 0f;
 }
 
 public class SaveManager

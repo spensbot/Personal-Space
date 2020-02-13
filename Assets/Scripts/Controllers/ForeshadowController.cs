@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ForeshadowController : MonoBehaviour
+public class ForeshadowController : Trackable
 {
     [SerializeField] GameObject enemy;
     [SerializeField] GameObject enemyEntryEffect;
@@ -10,8 +10,9 @@ public class ForeshadowController : MonoBehaviour
     public List<GameObject> enemies;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         Vector3 destination = this.gameObject.transform.position;
         adjustTransform();
         iTween.MoveTo(this.gameObject, iTween.Hash("position", destination, "time", secondsToEnemy, "easetype", iTween.EaseType.easeOutQuad));
@@ -21,8 +22,7 @@ public class ForeshadowController : MonoBehaviour
     void SpawnEnemy()
     {
         Instantiate(enemyEntryEffect, this.gameObject.transform.position, Quaternion.identity);
-        GameObject enemyInstance = Instantiate(enemy, this.gameObject.transform.position, Quaternion.identity);
-        enemies.Add(enemyInstance);
+        Instantiate(enemy, this.gameObject.transform.position, Quaternion.identity);
         Destroy(this.gameObject);
     }
 

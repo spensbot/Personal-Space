@@ -8,6 +8,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] Text scoreText;
     [SerializeField] Text playButtonText;
     [SerializeField] Text highScoreText;
+    [SerializeField] Text totalPlayTimeText;
     [SerializeField] GameObject bootScreen;
 
 //---------------     LIFECYCLE METHODS     -----------------
@@ -17,6 +18,7 @@ public class UIManager : Singleton<UIManager>
         EventManager.EnterState += EnterState;
         EventManager.ScoreChanged += ScoreChanged;
         EventManager.HighScoreChanged += HighScoreChanged;
+        EventManager.TotalPlayTimeChanged += TotalPlayTimeChanged;
     }
 
     protected override void OnDestroy()
@@ -25,6 +27,7 @@ public class UIManager : Singleton<UIManager>
         EventManager.EnterState -= EnterState;
         EventManager.ScoreChanged -= ScoreChanged;
         EventManager.HighScoreChanged -= HighScoreChanged;
+        EventManager.TotalPlayTimeChanged -= TotalPlayTimeChanged;
     }
 
 //-----------------     EVENT RECEIVERS     -----------------
@@ -52,6 +55,11 @@ public class UIManager : Singleton<UIManager>
     void HighScoreChanged(int newHighScore)
     {
         highScoreText.text = $"High Score: {newHighScore}";
+    }
+
+    void TotalPlayTimeChanged(float newTotalPlayTime)
+    {
+        totalPlayTimeText.text = GetTotalPlayTimeText(newTotalPlayTime);
     }
 
 //-------------------     HELPER FUNCTIONS     -----------------
@@ -83,5 +91,18 @@ public class UIManager : Singleton<UIManager>
     int GetScoreFontSize(int score)
     {
         return 50 + (score);
+    }
+
+    string GetTotalPlayTimeText(float totalPlayTime)
+    {
+        if (totalPlayTime < 60 * 60)
+        {
+            float minutes = totalPlayTime / 60;
+            return string.Format("{0:f1} minutes", minutes);
+        } else
+        {
+            float hours = totalPlayTime / 60 / 60;
+            return string.Format("{0:f1 hours", hours);
+        }
     }
 }

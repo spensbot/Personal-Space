@@ -2,6 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using GoogleMobileAds.Api;
+
+
+/// <summary>
+/// Things to do NEXT!!!!!
+///
+/// 2: Add Variable explosion sizes depending on gate hit location.
+///
+/// 3: Add health
+///
+/// 4: Add Powerups:
+/// - Slow Time
+/// - Add health
+/// - Shield
+/// 
+/// </summary>
 
 public enum GameState { BOOT, PLAY }
 
@@ -12,23 +28,27 @@ public class GameManager : Singleton<GameManager>
     public Vector2 screenBounds { get; private set; }
 
     int score;
+    float playTime;
     GameState currentState;
     SaveState activeSave;
 
-//----------------     LIFECYCLE METHODS     ---------------
+    //----------------     LIFECYCLE METHODS     ---------------
+
+    protected override void Awake()
+    {
+        base.Awake();
+        activeSave = SaveManager.Load();
+        DontDestroyOnLoad(this);
+    }
 
     void Start()
     {
-        activeSave = SaveManager.Load();
-        updateHighScore(activeSave.highScore);
-
-        DontDestroyOnLoad(this);
+        //MobileAds.Initialize(initState => { }); 
         
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0f));
         EventManager.EnemyDied += OnEnemyDied;
         EventManager.PlayerDied += OnPlayerDied;
         TransitionToState(GameState.BOOT);
-        
     }
 
     protected override void OnDestroy()
@@ -38,8 +58,17 @@ public class GameManager : Singleton<GameManager>
         EventManager.PlayerDied -= OnPlayerDied;
     }
 
+    private void Update()
+    {
+        if (currentState == GameState.PLAY)
+        {
+            playTime += Time.deltaTime;
+            DifficultyManager.Instance.ModUpdate(playTime);
+        }
+    }
 
-//-----------------     EVENTS     -------------------------
+
+    //-----------------     EVENTS     -------------------------
 
     void OnEnemyDied()
     {
@@ -48,11 +77,11 @@ public class GameManager : Singleton<GameManager>
 
     void OnPlayerDied()
     {
-        if (score > activeSave.highScore)
+        if (DebugManager.Instance.allowPlayerDeath)
         {
-            updateHighScore(score);
+            TransitionToState(GameState.BOOT);
+            SaveManager.Save(activeSave);
         }
-        TransitionToState(GameState.BOOT);
     }
 
     public void StartGame()
@@ -66,11 +95,25 @@ public class GameManager : Singleton<GameManager>
         EventManager.NotifyScoreChange(score);
     }
 
-    void updateHighScore(int newHighScore)
+    void updatePlayTime(float newPlayTime)
     {
-        activeSave.highScore = newHighScore;
-        SaveManager.Save(activeSave);
-        EventManager.NotifyHighScoreChange(newHighScore);
+        playTime = newPlayTime;
+        DifficultyManager.Instance.ModUpdate(playTime);
+    }
+
+    void updateHighScore()
+    {
+        if (score > activeSave.highScore)
+        {
+            activeSave.highScore = score;
+        }
+        EventManager.NotifyHighScoreChange(activeSave.highScore);
+    }
+
+    void updateTotalPlayTime()
+    {
+        activeSave.totalPlayTime += playTime;
+        EventManager.NotifyTotalPlayTimeChanged(activeSave.totalPlayTime);
     }
 
 
@@ -89,11 +132,15 @@ public class GameManager : Singleton<GameManager>
         switch (state)
         {
             case GameState.BOOT:
-                updateScore(0);
                 Time.timeScale = 0.0f;
+                updateHighScore();
+                updateTotalPlayTime();
+                DifficultyManager.Instance.ModUpdate(0f);
                 break;
             case GameState.PLAY:
                 Time.timeScale = 1.0f;
+                updateScore(0);
+                updatePlayTime(0f);
                 break;
         }
     }

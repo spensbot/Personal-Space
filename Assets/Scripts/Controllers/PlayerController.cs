@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Singleton<PlayerController>
 {
-    [SerializeField] private float maxSpeed = 7;
     [SerializeField] GameObject playerSpawnPoint;
 
     Rigidbody2D rb;
@@ -15,7 +14,6 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
     }
-
 
     void Update()
     {
@@ -29,7 +27,7 @@ public class PlayerController : MonoBehaviour
         Input2D input = InputManager.Instance.Input;
         if (input.magnitude > 0.0f)
         {
-            rb.position += input.vector * Time.deltaTime * maxSpeed;
+            rb.position += input.vector * Time.deltaTime * DifficultyManager.Instance.playerSpeed;
             rb.rotation = input.angle - 90;
         }
     }

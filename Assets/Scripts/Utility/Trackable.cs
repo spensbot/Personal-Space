@@ -22,9 +22,13 @@ public abstract class Trackable : MonoBehaviour
 
     public static void DestroyAll()
     {
-        foreach (GameObject instance in instances)
+        if (instances != null)
         {
-            Destroy(instance);
+            foreach (GameObject instance in instances)
+            {
+                Destroy(instance);
+            }
+            instances.Clear();
         }
     }
 }

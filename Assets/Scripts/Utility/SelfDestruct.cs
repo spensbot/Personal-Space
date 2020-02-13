@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelfDestruct : MonoBehaviour
+public class SelfDestruct : Trackable
 {
     [SerializeField] float delay;
 
-    void Start()
+    protected override void Start()
     {
         Destroy(this.gameObject, delay);
     }

@@ -7,7 +7,9 @@ public class DebugManager : Singleton<DebugManager>
 {
     int numLines = 30;
     string[] messages;
-    [SerializeField] bool debug;
+    [SerializeField] bool showDebugText;
+    [SerializeField] public bool spawnEnemies;
+    [SerializeField] public bool allowPlayerDeath;
     [SerializeField] Text debugText;
 
     protected override void Awake()
@@ -29,7 +31,7 @@ public class DebugManager : Singleton<DebugManager>
     private void SetDebugText()
     {
         debugText.text = "";
-        if (debug)
+        if (showDebugText)
         {
             for (int i = 0; i < messages.Length; i++)
             {

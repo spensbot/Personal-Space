@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class DifficultyManager : Singleton<DifficultyManager>
 {
-    [SerializeField] [Range(0f, 50f)] float startPlayerSpeed;
-    [SerializeField] [Range(0f, 50f)] float startEnemySpeed;
-    [SerializeField] [Range(0f, 50f)] float startEnemySpawn;
-    [SerializeField] [Range(0f, 50f)] float startGateSpawn;
+    [Header("Initial Game Parameters")]
+    [SerializeField] [Range(1f, 10f)] float startPlayerSpeed;
+    [SerializeField] [Range(1f, 10f)] float startEnemySpeed;
+    [SerializeField] [Range(1f, 3f)] float startEnemySpawn;
+    [SerializeField] [Range(1f, 10f)] float startGateSpawn;
 
+    [Header("Modify param % per minute of play")]
     // % change in player speed per minute of play
-    [SerializeField] [Range(0f, 50f)] float modPlayerSpeed;
+    [SerializeField] [Range(0f, 0.5f)] float modPlayerSpeed;
     // % change in enemy speed per minute of play
-    [SerializeField] [Range(0f, 50f)] float modEnemySpeed;
-        // % change in enemy spawn time per minute of play
-    [SerializeField] [Range(0f, 0.01f)] float modEnemySpawn;
+    [SerializeField] [Range(0f, 0.5f)] float modEnemySpeed;
+    // % change in enemy spawn time per minute of play
+    [SerializeField] [Range(-0.2f, 0f)] float modEnemySpawn;
     // % change in gate spawn time per minute of play
-    [SerializeField] [Range(0f, 0.01f)] float modGateSpawn;
+    [SerializeField] [Range(-0.25f, 0.25f)] float modGateSpawn;
 
     // Public values for use in game
     public float playerSpeed { get; private set; }
@@ -28,10 +30,10 @@ public class DifficultyManager : Singleton<DifficultyManager>
     public void ModUpdate(float elapsedSeconds)
     {
         float elapsedMinutes = elapsedSeconds / 60f;
-        playerSpeed = startPlayerSpeed + modPlayerSpeed * elapsedMinutes;
-        enemySpeed = startEnemySpeed + modEnemySpeed * elapsedMinutes;
-        enemySpawnTime = startEnemySpawn + modEnemySpawn * elapsedMinutes;
-        gateSpawnTime = startGateSpawn + modGateSpawn * elapsedMinutes;
+        playerSpeed = startPlayerSpeed * ( 1 + modPlayerSpeed * elapsedMinutes );
+        enemySpeed = startEnemySpeed * ( 1 + modEnemySpeed * elapsedMinutes );
+        enemySpawnTime = startEnemySpawn * ( 1 + modEnemySpawn * elapsedMinutes );
+        gateSpawnTime = startGateSpawn * ( 1 + modGateSpawn * elapsedMinutes );
 
         //DEBUG VALUES
         DebugManager.Instance.Set(0, $"Elapsed Minutes: {elapsedMinutes}");

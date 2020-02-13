@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : Trackable
 {
-    [SerializeField] float maxSpeed = 3;
+    [SerializeField] GameObject enemyDeathEffect;
 
     PlayerController player;
     Vector2 move;
     Rigidbody2D rb;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         rb = GetComponent<Rigidbody2D>();
         player = FindObjectOfType<PlayerController>();
     }
@@ -22,12 +23,13 @@ public class EnemyController : MonoBehaviour
     {
         move = player.position - rb.position;
         move.Normalize();
-        rb.position += move * Time.deltaTime * maxSpeed;
+        rb.position += move * Time.deltaTime * DifficultyManager.Instance.enemySpeed;
     }
 
     public void Die()
     {
         EventManager.NotifyEnemyDied();
+        Instantiate(enemyDeathEffect, rb.position, Quaternion.identity);
         Destroy(this.gameObject);
     }
 }
