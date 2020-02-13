@@ -2,12 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//A custom input structure for this game.
+//Takes and input vector and normalizes it if greater than 1.
+//Also generates angle from right.
 public struct Input2D
 {
-    public Input2D(Vector2 v, float a)
+    public Input2D(Vector2 v)
     {
         vector = v;
-        angle = a;
+        if (vector.magnitude > 1)
+        {
+            vector.Normalize();
+        }
+        angle = Mathf.Atan2(vector.y, vector.x) * Mathf.Rad2Deg;
+        Debug.Log(angle);
         magnitude = vector.magnitude;
     }
     public Vector2 vector;
@@ -17,34 +25,21 @@ public struct Input2D
 
 public class InputManager : Singleton<InputManager>
 {
-    FixedJoystick leftJoystick;
-    FixedJoystick rightJoystick;
+    FixedJoystick joystick;
 
     public Input2D Input { get; private set; }
 
     // Start is called before the first frame update
     void Start()
     {
-        leftJoystick = GameObject.Find("Left Joystick").GetComponent<FixedJoystick>();
-        rightJoystick = GameObject.Find("Right Joystick").GetComponent<FixedJoystick>();
-        Input = new Input2D(Vector2.zero, 0f);
+        joystick = GameObject.Find("Joystick").GetComponent<FixedJoystick>();
+        Input = new Input2D(Vector2.zero);
     }
 
     public void updateInput()
     {
-        Vector2 leftInputVector = new Vector2(leftJoystick.Horizontal, leftJoystick.Vertical);
-        Vector2 rightInputVector = new Vector2(rightJoystick.Horizontal, rightJoystick.Vertical);
+        Vector2 inputVector = new Vector2(joystick.Horizontal, joystick.Vertical);
 
-        //The overall input vector is the sum of the two joystick inputs.
-        Vector2 vector = leftInputVector + rightInputVector;
-        //However, the overall input magnitude cannot be higher than 1.
-        if (vector.magnitude > 1)
-        {
-            vector.Normalize();
-        }
-
-        float angle = Mathf.Atan2(vector.y, vector.x) * Mathf.Rad2Deg;
-
-        Input = new Input2D(vector, angle);
+        Input = new Input2D(inputVector);
     }
 }
