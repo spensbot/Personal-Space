@@ -364,7 +364,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 1349493852}
-  playButtonText: {fileID: 8068810416608328526}
   highScoreText: {fileID: 7297878093131674382}
   totalPlayTimeText: {fileID: 8670008854442939145}
   bootScreen: {fileID: 8338001309053630315}
@@ -553,7 +552,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.20754719, g: 0.20069422, b: 0.20069422, a: 0}
+  m_BackGroundColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1522,7 +1521,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 755.1, y: 125}
+  m_SizeDelta: {x: 346.1, y: 77.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6808711215015173486
 MonoBehaviour:
@@ -1801,7 +1800,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: PLAY
 --- !u!1 &8338001309053630315
 GameObject:
   m_ObjectHideFlags: 0
@@ -1812,6 +1811,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4904304769357862821}
   - component: {fileID: 8711349767644198789}
+  - component: {fileID: 8338001309053630316}
   - component: {fileID: 7391082004347199244}
   m_Layer: 5
   m_Name: Boot Screen
@@ -1820,6 +1820,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8338001309053630316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8338001309053630315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae67b152cad78475aa646a57db918360, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!222 &8656822112339814925
 CanvasRenderer:
   m_ObjectHideFlags: 0

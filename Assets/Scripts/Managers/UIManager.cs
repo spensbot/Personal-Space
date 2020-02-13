@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class UIManager : Singleton<UIManager>
 {
     [SerializeField] Text scoreText;
-    [SerializeField] Text playButtonText;
     [SerializeField] Text highScoreText;
     [SerializeField] Text totalPlayTimeText;
     [SerializeField] GameObject bootScreen;
@@ -48,7 +47,6 @@ public class UIManager : Singleton<UIManager>
     {
         scoreText.text = $"{newScore}";
         scoreText.fontSize = GetScoreFontSize(newScore);
-        playButtonText.text = GetPlayButtonText(newScore);
 
     }
 
@@ -63,30 +61,6 @@ public class UIManager : Singleton<UIManager>
     }
 
 //-------------------     HELPER FUNCTIONS     -----------------
-
-    string GetPlayButtonText(int score)
-    {
-        if (score > 100)
-        {
-            return "It's Going Down For Real";
-        }
-        else if (score > 20)
-        {
-            return "I Can't Let Them Take My Personal Space";
-        }
-        else if (score > 10)
-        {
-            return "I CAN DO BETTER!";
-        }
-        else if (score > 0)
-        {
-            return "Ok, I'm Getting It Now";
-        }
-        else
-        {
-            return "Get Started";
-        }
-    }
 
     int GetScoreFontSize(int score)
     {

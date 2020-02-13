@@ -42,9 +42,7 @@ public class GameManager : Singleton<GameManager>
     }
 
     void Start()
-    {
-        //MobileAds.Initialize(initState => { }); 
-        
+    {   
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0f));
         EventManager.EnemyDied += OnEnemyDied;
         EventManager.PlayerDied += OnPlayerDied;
