@@ -36,10 +36,10 @@ public class DifficultyManager : Singleton<DifficultyManager>
         gateSpawnTime = startGateSpawn * ( 1 + modGateSpawn * elapsedMinutes );
 
         //DEBUG VALUES
-        DebugManager.Instance.Set(0, $"Elapsed Minutes: {elapsedMinutes}");
-        DebugManager.Instance.Set(1, $"Player Speed: {playerSpeed}");
-        DebugManager.Instance.Set(2, $"Enemy Speed: {enemySpeed}");
-        DebugManager.Instance.Set(3, $"Enemy Spawn Time: {enemySpawnTime}");
-        DebugManager.Instance.Set(4, $"Gate Spawn Time: {gateSpawnTime}");
+        DevManager.Instance.Set(0, $"Elapsed Minutes: {elapsedMinutes}");
+        DevManager.Instance.Set(1, $"Player Speed: {playerSpeed}");
+        DevManager.Instance.Set(2, $"Enemy Speed: {enemySpeed}");
+        DevManager.Instance.Set(3, $"Enemy Spawn Time: {enemySpawnTime}");
+        DevManager.Instance.Set(4, $"Gate Spawn Time: {gateSpawnTime}");
     }
 }

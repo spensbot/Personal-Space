@@ -4785,9 +4785,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16afb78fb308742e490b80ebe249be3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSpeed: 6
   baseRadius: 2
-  maxSpeed: 12
   maxRadius: 4
   discExplosion: {fileID: 5676778960481424783}
 --- !u!1 &5676778960481424783
@@ -4905,8 +4903,8 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.6
-      minScalar: 0.3
+      scalar: 1
+      minScalar: 0.5
       maxCurve:
         serializedVersion: 2
         m_Curve:

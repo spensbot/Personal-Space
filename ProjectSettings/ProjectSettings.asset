@@ -64,7 +64,7 @@ PlayerSettings:
   preserveFramebufferAlpha: 0
   disableDepthAndStencilBuffers: 0
   androidStartInFullscreen: 1
-  androidRenderOutsideSafeArea: 1
+  androidRenderOutsideSafeArea: 0
   androidUseSwappy: 0
   androidBlitType: 0
   defaultIsNativeResolution: 1
@@ -361,7 +361,7 @@ PlayerSettings:
       m_SubKind: 
     - m_Textures:
       - {fileID: 2800000, guid: 4621c40d25d2c42929278eafb49a2f5e, type: 3}
-      - {fileID: 2800000, guid: b03fc646aa0a24e5b95baf47ba85b778, type: 3}
+      - {fileID: 2800000, guid: 4373fdbd1a1674b208ca6451351f386b, type: 3}
       m_Width: 432
       m_Height: 432
       m_Kind: 2

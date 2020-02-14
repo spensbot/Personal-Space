@@ -45,9 +45,9 @@ public class SpawnManager : Singleton<SpawnManager>
 
     void SpawnForeshadow(float secondsToEnemy = defaultForeshadow)
     {
-        if (DebugManager.Instance.spawnEnemies)
+        if (DevManager.Instance.SpawnEnemies)
         {
-            Vector3 spawnPoint = GetRandomPointAlongRect(GameManager.Instance.screenBounds);
+            Vector3 spawnPoint = GetRandomPointAlongRect(ScreenManager.Instance.playRect);
             GameObject foreshadowInstance = Instantiate(foreshadow, spawnPoint, Quaternion.identity);
             ForeshadowController foreshadowController = foreshadowInstance.GetComponent<ForeshadowController>();
             foreshadowController.secondsToEnemy = secondsToEnemy;
@@ -56,7 +56,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
     void SpawnGate()
     {
-        Vector3 gateSpawnPoint = GetRandomPointInsideRect(GameManager.Instance.screenBounds);
+        Vector3 gateSpawnPoint = GetRandomPointInsideRect(ScreenManager.Instance.bombSpawnRect);
         GameObject gateInstance = Instantiate(gate, gateSpawnPoint, Quaternion.identity) as GameObject;
     }
 
@@ -76,30 +76,38 @@ public class SpawnManager : Singleton<SpawnManager>
         }
     }
 
-    Vector2 GetRandomPointAlongRect(Vector2 bounds)
+    Vector2 GetRandomPointAlongRect(Rect bounds)
     {
         Vector2 point = Vector2.zero;
-        float random = Random.Range(0, bounds.x + bounds.y);
-        if (random > bounds.x)
+        float randomSide = Random.Range(0, 4);
+
+        //Clockwise
+        if (randomSide < 1) //Top
         {
-            point.x = bounds.x;
-            point.y = random - bounds.x;
-        } else
+            point.y = bounds.yMax;
+            point.x = Random.Range(bounds.xMin, bounds.xMax);
+        } else if (randomSide < 2) //Right
         {
-            point.y = bounds.y;
-            point.x = random;
+            point.x = bounds.xMax;
+            point.y = Random.Range(bounds.yMin, bounds.yMax);
+        } else if (randomSide < 3) //Bottom
+        {
+            point.y = bounds.yMin;
+            point.x = Random.Range(bounds.xMin, bounds.xMax);
+        } else //Left
+        {
+            point.x = bounds.xMin;
+            point.y = Random.Range(bounds.yMin, bounds.yMax);
         }
-        point.x *= RandomSign();
-        point.y *= RandomSign();
 
         return point;
     }
 
 
-    Vector2 GetRandomPointInsideRect(Vector2 bounds)
+    Vector2 GetRandomPointInsideRect(Rect bounds)
     {
-        float x = Random.Range(-bounds.x, bounds.x);
-        float y = Random.Range(-bounds.y, bounds.y);
+        float x = Random.Range(bounds.xMin, bounds.xMax);
+        float y = Random.Range(bounds.yMin, bounds.yMax);
         return new Vector2(x, y);
     }
 

@@ -3,14 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DebugManager : Singleton<DebugManager>
+public class DevManager : Singleton<DevManager>
 {
-    int numLines = 30;
-    string[] messages;
+    [SerializeField] bool development;
     [SerializeField] bool showDebugText;
-    [SerializeField] public bool spawnEnemies;
-    [SerializeField] public bool allowPlayerDeath;
+    [SerializeField] bool spawnEnemies;
+    [SerializeField] bool allowPlayerDeath;
+    [SerializeField] [Range(0,2)] float timeScale;
     [SerializeField] Text debugText;
+
+    public bool AllowPlayerDeath { get { return development ? allowPlayerDeath : true ; } }
+    public bool SpawnEnemies { get { return development ? spawnEnemies: true ; } }
+
+    int numLines = 50;
+    string[] messages;
 
     protected override void Awake()
     {
@@ -20,7 +26,12 @@ public class DebugManager : Singleton<DebugManager>
 
     private void LateUpdate()
     {
-        SetDebugText();
+        if (development && showDebugText)
+        {
+            SetDebugText();
+            //Time.timeScale = timeScale;
+            //Time.fixedDeltaTime = 0.02f * timeScale;
+        }
     }
 
     public void Set(int line, string message)
@@ -31,7 +42,7 @@ public class DebugManager : Singleton<DebugManager>
     private void SetDebugText()
     {
         debugText.text = "";
-        if (showDebugText)
+        if (development && showDebugText)
         {
             for (int i = 0; i < messages.Length; i++)
             {

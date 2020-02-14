@@ -28,21 +28,21 @@ public class ForeshadowController : Trackable
 
     void adjustTransform()
     {
-        Vector2 screenbounds = GameManager.Instance.screenBounds;
+        Rect playRect = ScreenManager.Instance.playRect;
         Vector2 position = this.gameObject.transform.position;
-        if (Mathf.Approximately(position.x, screenbounds.x))
+        if (Mathf.Approximately(position.x, playRect.xMax))
         {
             //Right of screen.
             this.gameObject.transform.Rotate(new Vector3(0, 0, 90));
             this.gameObject.transform.position += Vector3.right;
         }
-        else if (Mathf.Approximately(position.y, screenbounds.y))
+        else if (Mathf.Approximately(position.y, playRect.yMax))
         {
             //Top of screen.
             this.gameObject.transform.Rotate(new Vector3(0, 0, 180));
             this.gameObject.transform.position += Vector3.up;
         }
-        else if (Mathf.Approximately(-position.x, screenbounds.x))
+        else if (Mathf.Approximately(position.x, playRect.xMin))
         {
             //Left of screen.
             this.gameObject.transform.Rotate(new Vector3(0, 0, 270));

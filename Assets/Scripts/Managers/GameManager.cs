@@ -8,7 +8,9 @@ using GoogleMobileAds.Api;
 /// <summary>
 /// Things to do NEXT!!!!!
 ///
-/// 2: Add Variable explosion sizes depending on gate hit location.
+/// 1: Add asymptotal game speed and spawning to difficulty manager.
+///
+/// 2: Slow motion when gates are hit
 ///
 /// 3: Add health
 ///
@@ -23,10 +25,6 @@ public enum GameState { BOOT, PLAY }
 
 public class GameManager : Singleton<GameManager>
 {
-    [SerializeField] SpawnManager spawnManager;
-
-    public Vector2 screenBounds { get; private set; }
-
     int score;
     float playTime;
     GameState currentState;
@@ -43,7 +41,6 @@ public class GameManager : Singleton<GameManager>
 
     void Start()
     {   
-        screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0f));
         EventManager.EnemyDied += OnEnemyDied;
         EventManager.PlayerDied += OnPlayerDied;
         TransitionToState(GameState.BOOT);
@@ -75,7 +72,7 @@ public class GameManager : Singleton<GameManager>
 
     void OnPlayerDied()
     {
-        if (DebugManager.Instance.allowPlayerDeath)
+        if (DevManager.Instance.AllowPlayerDeath)
         {
             TransitionToState(GameState.BOOT);
             SaveManager.Save(activeSave);

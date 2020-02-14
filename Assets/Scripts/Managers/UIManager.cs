@@ -76,7 +76,7 @@ public class UIManager : Singleton<UIManager>
         } else
         {
             float hours = totalPlayTime / 60 / 60;
-            return string.Format("{0:f1 hours", hours);
+            return string.Format("{0:f1}  hours", hours);
         }
     }
 }

@@ -15,7 +15,6 @@ public struct Input2D
             vector.Normalize();
         }
         angle = Mathf.Atan2(vector.y, vector.x) * Mathf.Rad2Deg;
-        Debug.Log(angle);
         magnitude = vector.magnitude;
     }
     public Vector2 vector;

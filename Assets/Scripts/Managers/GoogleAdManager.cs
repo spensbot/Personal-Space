@@ -4,9 +4,13 @@ using UnityEngine;
 using GoogleMobileAds.Api;
 using System;
 
-public class BootScreen : MonoBehaviour
+public class GoogleAdManager : Singleton<GoogleAdManager>
 {
     private BannerView bannerView;
+    public int adWidthScaled { get; private set; }
+    public int adHeightScaled { get; private set; }
+    public int adWidthUnscaled { get; private set; }
+    public int adHeightUnscaled { get; private set; }
 
     public void Start()
     {
@@ -36,8 +40,20 @@ public class BootScreen : MonoBehaviour
             string adUnitId = "unexpected_platform";
         #endif
 
+        AdSize adaptiveBannerSize = AdSize.GetPortraitAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
+
+        Debug.Log("Screen.widht: " + Screen.width);
+        Debug.Log("Adsize.Fullwidth: " + AdSize.FullWidth);
+        Debug.Log("Google Device Scale: " + MobileAds.Utils.GetDeviceScale());
+
+        // Clean up banner ad before creating a new one.
+        if (this.bannerView != null)
+        {
+            this.bannerView.Destroy();
+        }
+
         // Create a 320x50 banner at the top of the screen.
-        this.bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Top);
+        this.bannerView = new BannerView(adUnitId, adaptiveBannerSize, AdPosition.Top);
 
         //---------     AD LIFECYCLE HOOKS     ------------------
 
@@ -61,7 +77,8 @@ public class BootScreen : MonoBehaviour
 
     public void HandleOnAdLoaded(object sender, EventArgs args)
     {
-        Debug.Log("HandleAdLoaded event received");
+        DevManager.Instance.Set(20, $"BannerView width: {this.bannerView.GetWidthInPixels()}");
+        DevManager.Instance.Set(21, $"BannerView height: {this.bannerView.GetHeightInPixels()}");
     }
 
     public void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
@@ -84,8 +101,9 @@ public class BootScreen : MonoBehaviour
         Debug.Log("HandleAdLeavingApplication event received");
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         bannerView.Destroy();
     }
 }
