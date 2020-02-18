@@ -31,7 +31,25 @@ public class GateController : Trackable
             float collisionDistance = (collisionPoint - rb.position).magnitude;
             float explosionMagnitude = 1f - collisionDistance / maxCollisionDistance;
             explosionController.SetMagnitude(explosionMagnitude);
+
+            playExplosionSound(explosionMagnitude);
+
+            Handheld.Vibrate();
+
             Destroy(this.gameObject);
+
+
+        }
+    }
+
+    private void playExplosionSound(float magnitude)
+    {
+        if (magnitude > 0.5f)
+        {
+            AudioManager.Instance.PlaySfx(SfxID.EXPLOSION_LARGE);
+        } else
+        {
+            AudioManager.Instance.PlaySfx(SfxID.EXPLOSION_SMALL);
         }
     }
 }

@@ -5,20 +5,20 @@ using UnityEngine;
 public class DifficultyManager : Singleton<DifficultyManager>
 {
     [Header("Initial Game Parameters")]
-    [SerializeField] [Range(1f, 10f)] float startPlayerSpeed;
-    [SerializeField] [Range(1f, 10f)] float startEnemySpeed;
-    [SerializeField] [Range(1f, 3f)] float startEnemySpawn;
-    [SerializeField] [Range(1f, 10f)] float startGateSpawn;
+    [SerializeField] float startPlayerSpeed;
+    [SerializeField] float startEnemySpeed;
+    [SerializeField] float startEnemySpawn;
+    [SerializeField] float startGateSpawn;
 
-    [Header("Modify param % per minute of play")]
-    // % change in player speed per minute of play
-    [SerializeField] [Range(0f, 0.5f)] float modPlayerSpeed;
-    // % change in enemy speed per minute of play
-    [SerializeField] [Range(0f, 0.5f)] float modEnemySpeed;
-    // % change in enemy spawn time per minute of play
-    [SerializeField] [Range(-0.2f, 0f)] float modEnemySpawn;
-    // % change in gate spawn time per minute of play
-    [SerializeField] [Range(-0.25f, 0.25f)] float modGateSpawn;
+    [Header("Game Parameter Asymptotes")]
+    [SerializeField] float approachPlayerSpeed;
+    [SerializeField] float approachEnemySpeed;
+    [SerializeField] float approachEnemySpawn;
+
+    [Header("Asynmptote Power")]
+    [SerializeField] float powPlayerSpeed;
+    [SerializeField] float powEnemySpeed;
+    [SerializeField] float powEnemySpawn;
 
     // Public values for use in game
     public float playerSpeed { get; private set; }
@@ -30,10 +30,10 @@ public class DifficultyManager : Singleton<DifficultyManager>
     public void ModUpdate(float elapsedSeconds)
     {
         float elapsedMinutes = elapsedSeconds / 60f;
-        playerSpeed = startPlayerSpeed * ( 1 + modPlayerSpeed * elapsedMinutes );
-        enemySpeed = startEnemySpeed * ( 1 + modEnemySpeed * elapsedMinutes );
-        enemySpawnTime = startEnemySpawn * ( 1 + modEnemySpawn * elapsedMinutes );
-        gateSpawnTime = startGateSpawn * ( 1 + modGateSpawn * elapsedMinutes );
+        playerSpeed = Asymptotic(elapsedMinutes, startPlayerSpeed, approachPlayerSpeed, powPlayerSpeed);
+        enemySpeed = Asymptotic(elapsedMinutes, startEnemySpeed, approachEnemySpeed, powEnemySpeed);
+        enemySpawnTime = Asymptotic(elapsedMinutes, startEnemySpawn, approachEnemySpawn, powEnemySpawn);
+        gateSpawnTime = startGateSpawn;
 
         //DEBUG VALUES
         DevManager.Instance.Set(0, $"Elapsed Minutes: {elapsedMinutes}");
@@ -41,5 +41,13 @@ public class DifficultyManager : Singleton<DifficultyManager>
         DevManager.Instance.Set(2, $"Enemy Speed: {enemySpeed}");
         DevManager.Instance.Set(3, $"Enemy Spawn Time: {enemySpawnTime}");
         DevManager.Instance.Set(4, $"Gate Spawn Time: {gateSpawnTime}");
+    }
+
+    //Returns values that approach "asymptote" as x -> infinity
+    //Takes the form 1/x^pow
+    //Uses algebra to shape the function based on tangible inputs.
+    private float Asymptotic(float x, float initY, float asymptote, float pow)
+    {
+        return (initY - asymptote) / Mathf.Pow(x + 1f, pow) + asymptote; 
     }
 }

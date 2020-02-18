@@ -26,6 +26,7 @@ public class DevManager : Singleton<DevManager>
 
     private void LateUpdate()
     {
+        debugText.text = "";
         if (development && showDebugText)
         {
             SetDebugText();
@@ -41,19 +42,15 @@ public class DevManager : Singleton<DevManager>
 
     private void SetDebugText()
     {
-        debugText.text = "";
-        if (development && showDebugText)
+        for (int i = 0; i < messages.Length; i++)
         {
-            for (int i = 0; i < messages.Length; i++)
+            if (messages[i] != null)
             {
-                if (messages[i] != null)
-                {
-                    debugText.text += messages[i] + "\n";
-                }
-                else
-                {
-                    debugText.text += "\n";
-                }
+                debugText.text += messages[i] + "\n";
+            }
+            else
+            {
+                debugText.text += "\n";
             }
         }
     }

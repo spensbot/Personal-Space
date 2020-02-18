@@ -14,6 +14,9 @@ public class EnemyController : Trackable
     protected override void Start()
     {
         base.Start();
+
+        AudioManager.Instance.PlaySfx(SfxID.ENEMY_SPAWN);
+
         rb = GetComponent<Rigidbody2D>();
         player = FindObjectOfType<PlayerController>();
     }

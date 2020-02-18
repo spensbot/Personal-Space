@@ -7,6 +7,7 @@ using System;
 public class GoogleAdManager : Singleton<GoogleAdManager>
 {
     private BannerView bannerView;
+    private int attempts;
     public int adWidthScaled { get; private set; }
     public int adHeightScaled { get; private set; }
     public int adWidthUnscaled { get; private set; }
@@ -30,6 +31,8 @@ public class GoogleAdManager : Singleton<GoogleAdManager>
 
     private void RequestBanner()
     {
+        attempts += 1;
+
         //Test adUnitIds from Google.
         //Real android bannerId: ca-app-pub-9013467281341157/6292838546
         #if UNITY_ANDROID
@@ -73,6 +76,8 @@ public class GoogleAdManager : Singleton<GoogleAdManager>
 
         // Load the banner with the request.
         this.bannerView.LoadAd(request);
+
+        DevManager.Instance.Set(20, $"Banner Requested {this.attempts} times");
     }
 
     public void HandleOnAdLoaded(object sender, EventArgs args)
@@ -83,7 +88,9 @@ public class GoogleAdManager : Singleton<GoogleAdManager>
 
     public void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
     {
+        DevManager.Instance.Set(21, "HandleFailedToReceiveAd event received with message: " + args.Message);
         Debug.Log("HandleFailedToReceiveAd event received with message: " + args.Message);
+        Invoke("RequestBanner", 5.0f);
     }
 
     public void HandleOnAdOpened(object sender, EventArgs args)

@@ -9,6 +9,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] Text highScoreText;
     [SerializeField] Text totalPlayTimeText;
     [SerializeField] GameObject bootScreen;
+    int startingScoreFontSize;
 
 //---------------     LIFECYCLE METHODS     -----------------
 
@@ -18,6 +19,7 @@ public class UIManager : Singleton<UIManager>
         EventManager.ScoreChanged += ScoreChanged;
         EventManager.HighScoreChanged += HighScoreChanged;
         EventManager.TotalPlayTimeChanged += TotalPlayTimeChanged;
+        startingScoreFontSize = scoreText.fontSize;
     }
 
     protected override void OnDestroy()
@@ -64,19 +66,19 @@ public class UIManager : Singleton<UIManager>
 
     int GetScoreFontSize(int score)
     {
-        return 50 + (score);
+        return startingScoreFontSize + (score);
     }
 
     string GetTotalPlayTimeText(float totalPlayTime)
     {
-        if (totalPlayTime < 60 * 60)
+        if (totalPlayTime < 60 * 60 * 10)
         {
             float minutes = totalPlayTime / 60;
-            return string.Format("{0:f1} minutes", minutes);
+            return string.Format("{0:f0} minutes", minutes);
         } else
         {
             float hours = totalPlayTime / 60 / 60;
-            return string.Format("{0:f1}  hours", hours);
+            return string.Format("{0:f0}  hours", hours);
         }
     }
 }

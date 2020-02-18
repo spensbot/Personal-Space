@@ -32,9 +32,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-minutes = np.arange(0, 10, 0.01);
+minutes = np.arange(0, 5, 0.01)
 
 #---------------     ORIGINAL     --------------
+
 _startPlayerSpeed = 6 #units per second
 _startEnemySpeed = 3 #units per second
 _startEnemySpawn = 2 #seconds per spawn
@@ -45,7 +46,7 @@ _modEnemySpawn = -0.2 #change per minute
 
 # y = mx + b
 def linear(x, m, b):
-    return m * x + b
+  return m * x + b
 
 _playerSpeed = linear(minutes, _modPlayerSpeed, _startPlayerSpeed)
 _enemySpeed = linear(minutes, _modEnemySpeed, _startEnemySpeed)
@@ -53,27 +54,34 @@ _enemySpawn = linear(minutes, _modEnemySpawn, _startEnemySpawn)
 
 #---------------     PROPOSED     -----------------
 
-
 def asymptotic(x, asymptote, xShift, yScale, power):
   return yScale * 1/(x + xShift)**power + asymptote
 
-playerSpeed = asymptotic(minutes, 10, 1.5, -4, .75)
-enemySpeed = asymptotic(minutes, 6, 1.5, -3, .75)
-enemySpawn = asymptotic(minutes, 0.5, 2, 3, 1)
+def asymptotic2(x, initY, asymptote, pow):
+  scale = initY - asymptote
+  return scale / (x + 1) ** pow + asymptote
 
+# # (x, asymptote, xShift, yScale, power)
+# playerSpeed = asymptotic(minutes, 10, 1.5, -4, .75)
+# enemySpeed = asymptotic(minutes, 6, 1.5, -3, .75)
+# enemySpawn = asymptotic(minutes, 0.5, 2, 1, 1)
 
-fig, (ax1, ax2, ax3) = plt.subplots(3, sharex=True)
+# (x, initY, asymptote, pow)
+playerSpeed = asymptotic2(minutes, 5, 10, 1)
+enemySpeed = asymptotic2(minutes, 2, 6, 1)
+enemySpawn = asymptotic2(minutes, 3, 0.5, 1.5)
+
+fig, (ax1, ax2) = plt.subplots(2, sharex=True)
 fig.suptitle('Difficulty Parameters over Time')
-ax1.plot(minutes, _playerSpeed, 'k:')
-ax1.plot(minutes, playerSpeed, 'k-')
-ax1.set(ylabel='Player Speed')
-ax2.plot(minutes, _enemySpeed, 'k:')
-ax2.plot(minutes, enemySpeed, 'k-')
-ax2.set(ylabel='Enemy Speed')
-ax3.plot(minutes, _enemySpawn, 'k:')
-ax3.plot(minutes, enemySpawn, 'k-')
-ax3.set(ylabel='Enemy Spawn (s)', xlabel='Minutes of Play')
+ax1.plot(minutes, _playerSpeed, 'b:')
+ax1.plot(minutes, playerSpeed, 'b-')
+ax1.plot(minutes, _enemySpeed, 'r:')
+ax1.plot(minutes, enemySpeed, 'r-')
+ax1.set(ylabel='Player/Enemy Speed')
+
+ax2.plot(minutes, _enemySpawn, 'r:')
+ax2.plot(minutes, enemySpawn, 'r-')
+ax2.set(ylabel='Enemy Spawn (s)', xlabel='Minutes of Play')
 ax1.grid(b=True, which='both', axis='both')
 ax2.grid(b=True, which='both', axis='both')
-ax3.grid(b=True, which='both', axis='both')
 plt.show()

@@ -96,9 +96,9 @@ Blog
 About
 
 #SPENSER'S CUSTOM IGNORES
-Assets/3rd Party
-Assets/Plugins
 Assets/PlayServicesResolver
 Assets/JsonDotNet
 Assets/Joystick Pack
 Assets/GoogleMobileAds
+Assets/Fonts
+Assets/Plugins

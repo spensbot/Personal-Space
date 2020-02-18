@@ -76,6 +76,7 @@ public class GameManager : Singleton<GameManager>
         {
             TransitionToState(GameState.BOOT);
             SaveManager.Save(activeSave);
+            AudioManager.Instance.PlaySfx(SfxID.PLAYER_DIED);
         }
     }
 
