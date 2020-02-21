@@ -9,19 +9,17 @@ public enum SfxID
     EXPLOSION_SMALL,
     ENEMY_SPAWN,
     PLAYER_DIED,
+    SHIP_SOUND,
 }
 
 public enum SongID
 {
-    MAIN,
+    THEME,
 }
 
 public class Sound
 {
     public AudioClip clip;
-
-    [Range(0f, 1f)]
-    public float volume;
 
     [HideInInspector]
     public AudioSource source;
@@ -32,13 +30,17 @@ public class Song : Sound
 {
     public SongID id;
     public float bpm;
-    public float secondsToFirstChord;
-    public float beatsPerProgression;
+    public float secondsToFirstCycle;
+    public float beatsPerCycle;
 
+    public float SecondsPerCycle { get { return 60f / bpm * beatsPerCycle; } }
 }
 
 [System.Serializable]
 public class Sfx : Sound
 {
     public SfxID id;
+
+    [Range(0f, 1f)]
+    public float volume;
 }
