@@ -9,6 +9,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] Text highScoreText;
     [SerializeField] Text totalPlayTimeText;
     [SerializeField] GameObject bootScreen;
+    [SerializeField] GameObject settingsScreen;
     int startingScoreFontSize;
 
 //---------------     LIFECYCLE METHODS     -----------------
@@ -38,9 +39,14 @@ public class UIManager : Singleton<UIManager>
         switch (state){
             case GameState.PLAY:
                 bootScreen.SetActive(false);
+                settingsScreen.SetActive(false);
                 break;
             case GameState.BOOT:
                 bootScreen.SetActive(true);
+                settingsScreen.SetActive(false);
+                break;
+            case GameState.SETTINGS:
+                settingsScreen.SetActive(true);
                 break;
         }
     }

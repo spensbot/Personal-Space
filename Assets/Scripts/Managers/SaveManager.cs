@@ -6,11 +6,17 @@ public class SaveState
 {
     public int highScore = 0;
     public float totalPlayTime = 0f;
+
+    //Settings
+    public bool isVibration = true;
+    public float volumeMusic = 1f;
+    public float volumeSfx = 1f;
+
 }
 
 public class SaveManager
 {
-    private static readonly string fileName = "save.json";
+    private static readonly string fileName = "Dont Cheat Dude.json";
 
     public static void Save(SaveState saveState)
     {

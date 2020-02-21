@@ -17,10 +17,10 @@ public class PlayerController : Singleton<PlayerController>
 
     void Update()
     {
-
         InputManager.Instance.updateInput();
-    }
+        AudioManager.Instance.SetVolumeShipSound(InputManager.Instance.Input.magnitude);
 
+    }
 
     void FixedUpdate()
     {

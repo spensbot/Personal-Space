@@ -6,6 +6,7 @@ public class EventManager
     //Subscribe (+=) to be notified when an event is broadcast
     public static event Action PlayerDied;
     public static event Action EnemyDied;
+    public static event Action GateDestroyed;
     public static event Action<int> ScoreChanged;
     public static event Action<int> HighScoreChanged;
     public static event Action<float> TotalPlayTimeChanged;
@@ -20,6 +21,9 @@ public class EventManager
 
     public static void NotifyEnemyDied()
     { EnemyDied?.Invoke(); }
+
+    public static void NotifyGateDestroyed()
+    { GateDestroyed?.Invoke(); }
 
     public static void NotifyScoreChange(int newScore)
     { ScoreChanged?.Invoke(newScore); }

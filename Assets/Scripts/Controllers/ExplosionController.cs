@@ -35,11 +35,10 @@ public class ExplosionController : Trackable
 
     private void OnDrawGizmos()
     {
-        if (explosionCollider.isActiveAndEnabled)
+        if (explosionCollider != null)
         {
             Gizmos.DrawWireSphere(this.gameObject.transform.position, explosionCollider.radius);
         }
-
     }
 
     // Start is called before the first frame update

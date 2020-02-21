@@ -26,20 +26,23 @@ public class SpawnManager : Singleton<SpawnManager>
 
     void Update()
     {
-        float dt = Time.deltaTime;
-        secondsToNextEnemy -= dt;
-        secondsToNextGate -= dt;
-
-        if(secondsToNextGate < 0)
+        if (GameManager.Instance.currentState == GameState.PLAY)
         {
-            SpawnGate();
-            secondsToNextGate = DifficultyManager.Instance.gateSpawnTime;
-        }
+            float dt = Time.deltaTime;
+            secondsToNextEnemy -= dt;
+            secondsToNextGate -= dt;
 
-        if(secondsToNextEnemy < 0)
-        {
-            SpawnForeshadow();
-            secondsToNextEnemy = DifficultyManager.Instance.enemySpawnTime;
+            if (secondsToNextGate < 0)
+            {
+                SpawnGate();
+                secondsToNextGate = DifficultyManager.Instance.gateSpawnTime;
+            }
+
+            if (secondsToNextEnemy < 0)
+            {
+                SpawnForeshadow();
+                secondsToNextEnemy = DifficultyManager.Instance.enemySpawnTime;
+            }
         }
     }
 
@@ -66,10 +69,10 @@ public class SpawnManager : Singleton<SpawnManager>
         {
             case GameState.BOOT:
                 //Reset player position and clear enemies/gates/etc.
-                player.resetPosition();
                 break;
             case GameState.PLAY:
                 //Now add some foreshadows with a shorter fuse so the player doesn't have to wait for enemies.
+                player.resetPosition();
                 DestroyAllInstantiatables();
                 SpawnForeshadow(0f);
                 break;

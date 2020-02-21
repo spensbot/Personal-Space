@@ -8,27 +8,18 @@ using GoogleMobileAds.Api;
 /// <summary>
 /// Things to do NEXT!!!!!
 ///
-/// 1: Add asymptotal game speed and spawning to difficulty manager.
-///
-/// 2: Slow motion when gates are hit
-///
-/// 3: Add health
-///
-/// 4: Add Powerups:
-/// - Slow Time
-/// - Add health
-/// - Shield
+/// 
 /// 
 /// </summary>
 
-public enum GameState { BOOT, PLAY }
+public enum GameState { BOOT, PLAY, SETTINGS }
 
 public class GameManager : Singleton<GameManager>
 {
     int score;
     float playTime;
-    GameState currentState;
-    SaveState activeSave;
+    public GameState currentState { get; private set; }
+    public SaveState activeSave;
 
     //----------------     LIFECYCLE METHODS     ---------------
 
@@ -74,6 +65,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (DevManager.Instance.AllowPlayerDeath)
         {
+            AudioManager.Instance.RestartSong();
             TransitionToState(GameState.BOOT);
             SaveManager.Save(activeSave);
             AudioManager.Instance.PlaySfx(SfxID.PLAYER_DIED);
@@ -83,6 +75,19 @@ public class GameManager : Singleton<GameManager>
     public void StartGame()
     {
         TransitionToState(GameState.PLAY);
+    }
+
+    public void ToggleSettings()
+    {
+        if (currentState == GameState.BOOT)
+        {
+            TransitionToState(GameState.SETTINGS);
+        }
+        else if (currentState == GameState.SETTINGS)
+        {
+            TransitionToState(GameState.BOOT);
+        }
+        //If this is somehow called during the play state, nothing will happen.
     }
 
     void updateScore(int newScore)
@@ -128,13 +133,15 @@ public class GameManager : Singleton<GameManager>
         switch (state)
         {
             case GameState.BOOT:
-                Time.timeScale = 0.0f;
+                TimeManager.Instance.ClearEffects();
+                TimeManager.Instance.SetTimeScale(0.0f);
                 updateHighScore();
                 updateTotalPlayTime();
                 DifficultyManager.Instance.ModUpdate(0f);
+         
                 break;
             case GameState.PLAY:
-                Time.timeScale = 1.0f;
+                TimeManager.Instance.SetTimeScale(1.0f);
                 updateScore(0);
                 updatePlayTime(0f);
                 break;

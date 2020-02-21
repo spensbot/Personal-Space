@@ -67,9 +67,9 @@ def asymptotic2(x, initY, asymptote, pow):
 # enemySpawn = asymptotic(minutes, 0.5, 2, 1, 1)
 
 # (x, initY, asymptote, pow)
-playerSpeed = asymptotic2(minutes, 5, 10, 1)
-enemySpeed = asymptotic2(minutes, 2, 6, 1)
-enemySpawn = asymptotic2(minutes, 3, 0.5, 1.5)
+playerSpeed = asymptotic2(minutes, 5.5, 10, .5)
+enemySpeed = asymptotic2(minutes, 2.5, 6, .5)
+enemySpawn = asymptotic2(minutes, 2.75, 0.5, 1.0)
 
 fig, (ax1, ax2) = plt.subplots(2, sharex=True)
 fig.suptitle('Difficulty Parameters over Time')

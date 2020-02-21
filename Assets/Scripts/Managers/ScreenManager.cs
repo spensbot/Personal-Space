@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class ScreenManager : Singleton<ScreenManager>
 {
     [SerializeField] Image joystickDeadzone;
+    [SerializeField] Image googleAdDeadzone;
 
     public Rect screenRectPixels { get; private set; }
     public Rect screenRect { get; private set; }
@@ -33,6 +34,9 @@ public class ScreenManager : Singleton<ScreenManager>
         AdSize adaptiveBannerSize = AdSize.GetPortraitAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
         float googleAdHeightPixels = adaptiveBannerSize.Height;
         googleAdHeight = googleAdHeightPixels / pixelsPerUnit;
+        float deadzoneWidth = googleAdDeadzone.rectTransform.rect.width;
+        Debug.Log("DeadzoneWidth: " + deadzoneWidth);
+        googleAdDeadzone.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, deadzoneWidth * 0.15f);
 
         joystickHeight = joystickDeadzone.minHeight / pixelsPerUnit;
 
