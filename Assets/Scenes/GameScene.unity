@@ -7073,11 +7073,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28f8c3d85c82a4b88afa9f65e969d2d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPlayerSpeed: 5.5
-  startEnemySpeed: 2.5
-  startEnemySpawn: 2.75
+  startPlayerSpeed: 5
+  startEnemySpeed: 2
+  startEnemySpawn: 3
   startGateSpawn: 5
-  approachPlayerSpeed: 10
+  approachPlayerSpeed: 11
   approachEnemySpeed: 6
   approachEnemySpawn: 0.5
   powPlayerSpeed: 0.5

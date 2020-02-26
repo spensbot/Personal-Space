@@ -30,7 +30,15 @@
 # The game should 'asymptote' to a humanly impossible level of difficulty.
 
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
+
+font = {'family' : 'normal',
+        'weight' : 'bold',
+        'size'   : 16}
+
+matplotlib.rc('font', **font)
+
 
 minutes = np.arange(0, 5, 0.01)
 
@@ -67,21 +75,23 @@ def asymptotic2(x, initY, asymptote, pow):
 # enemySpawn = asymptotic(minutes, 0.5, 2, 1, 1)
 
 # (x, initY, asymptote, pow)
-playerSpeed = asymptotic2(minutes, 5.5, 10, .5)
-enemySpeed = asymptotic2(minutes, 2.5, 6, .5)
-enemySpawn = asymptotic2(minutes, 2.75, 0.5, 1.0)
+playerSpeed = asymptotic2(minutes, 5, 11, .6)
+enemySpeed = asymptotic2(minutes, 2, 6, .6)
+enemySpawn = asymptotic2(minutes, 3, 0.5, 1)
 
 fig, (ax1, ax2) = plt.subplots(2, sharex=True)
 fig.suptitle('Difficulty Parameters over Time')
-ax1.plot(minutes, _playerSpeed, 'b:')
+#ax1.plot(minutes, _playerSpeed, 'b:')
 ax1.plot(minutes, playerSpeed, 'b-')
-ax1.plot(minutes, _enemySpeed, 'r:')
+#ax1.plot(minutes, _enemySpeed, 'r:')
 ax1.plot(minutes, enemySpeed, 'r-')
-ax1.set(ylabel='Player/Enemy Speed')
+ax1.set(ylabel='Character Speed', xlabel='Minutes of Play')
+ax1.legend(["Enemy", "Player"],loc="upper left")
 
-ax2.plot(minutes, _enemySpawn, 'r:')
+#ax2.plot(minutes, _enemySpawn, 'r:')
 ax2.plot(minutes, enemySpawn, 'r-')
-ax2.set(ylabel='Enemy Spawn (s)', xlabel='Minutes of Play')
+ax2.set(ylabel='Enemy Spawn Time', xlabel='Minutes of Play')
 ax1.grid(b=True, which='both', axis='both')
 ax2.grid(b=True, which='both', axis='both')
+
 plt.show()

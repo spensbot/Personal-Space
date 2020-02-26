@@ -27,11 +27,13 @@ public class DevManager : Singleton<DevManager>
     private void LateUpdate()
     {
         debugText.text = "";
-        if (development && showDebugText)
+        if (development)
         {
-            SetDebugText();
-            //Time.timeScale = timeScale;
-            //Time.fixedDeltaTime = 0.02f * timeScale;
+            if (showDebugText)
+            {
+                SetDebugText();
+            }
+            TimeManager.Instance.SetTimeScale(timeScale);
         }
     }
 

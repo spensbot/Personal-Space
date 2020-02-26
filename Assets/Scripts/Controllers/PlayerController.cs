@@ -19,7 +19,6 @@ public class PlayerController : Singleton<PlayerController>
     {
         InputManager.Instance.updateInput();
         AudioManager.Instance.SetVolumeShipSound(InputManager.Instance.Input.magnitude);
-
     }
 
     void FixedUpdate()

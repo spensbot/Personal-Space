@@ -5,7 +5,7 @@ using UnityEngine;
 public class ExplosionController : Trackable
 {
     [SerializeField] [Range(1, 3)] float baseRadius = 2f;
-    [SerializeField] [Range(3, 6)] float maxRadius = 4f;
+    [SerializeField] [Range(3, 6)] float maxRadius = 3.5f;
 
     [SerializeField] GameObject discExplosion;
 
@@ -17,7 +17,7 @@ public class ExplosionController : Trackable
     {
         magnitude = Mathf.Clamp(magnitude, 0f, 1f);
         float radius = magnitude * (maxRadius - baseRadius) + baseRadius;
-        float speed = radius * 3f;
+        float speed = radius * 6f;
 
         pSystem = GetComponent<ParticleSystem>();
         explosionCollider = GetComponent<CircleCollider2D>();
@@ -28,7 +28,7 @@ public class ExplosionController : Trackable
         }
 
         var main = pSystem.main;
-        main.startSpeed = new ParticleSystem.MinMaxCurve(speed / 2, speed);
+        main.startSpeed = new ParticleSystem.MinMaxCurve(speed * 0.75f, speed);
 
         explosionCollider.radius = radius;
     }

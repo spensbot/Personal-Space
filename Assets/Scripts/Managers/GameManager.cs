@@ -133,7 +133,6 @@ public class GameManager : Singleton<GameManager>
         switch (state)
         {
             case GameState.BOOT:
-                TimeManager.Instance.ClearEffects();
                 TimeManager.Instance.SetTimeScale(0.0f);
                 updateHighScore();
                 updateTotalPlayTime();
@@ -157,6 +156,7 @@ public class GameManager : Singleton<GameManager>
             case GameState.BOOT:
                 break;
             case GameState.PLAY:
+                TimeManager.Instance.ClearEffects();
                 break;
         }
     }
