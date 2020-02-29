@@ -9,7 +9,7 @@ public class SaveState
 
     //Settings
     public bool isVibration = true;
-    public float volumeMusic = 1f;
+    public float volumeMusic = .66f;
     public float volumeSfx = 1f;
 
 }

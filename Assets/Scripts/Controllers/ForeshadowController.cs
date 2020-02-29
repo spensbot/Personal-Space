@@ -28,7 +28,7 @@ public class ForeshadowController : Trackable
 
     void adjustTransform()
     {
-        Rect playRect = ScreenManager.Instance.playRect;
+        Rect playRect = ScreenManager.Instance.PlayRectUnits;
         Vector2 position = this.gameObject.transform.position;
         if (Mathf.Approximately(position.x, playRect.xMax))
         {

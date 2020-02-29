@@ -24,7 +24,7 @@ public class DevManager : Singleton<DevManager>
         messages = new string[numLines];
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         debugText.text = "";
         if (development)
@@ -33,7 +33,7 @@ public class DevManager : Singleton<DevManager>
             {
                 SetDebugText();
             }
-            TimeManager.Instance.SetTimeScale(timeScale);
+            TimeManager.Instance.debugTimeScale = timeScale;
         }
     }
 

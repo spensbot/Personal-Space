@@ -76,7 +76,7 @@ def asymptotic2(x, initY, asymptote, pow):
 
 # (x, initY, asymptote, pow)
 playerSpeed = asymptotic2(minutes, 5, 11, .6)
-enemySpeed = asymptotic2(minutes, 2, 6, .6)
+enemySpeed = asymptotic2(minutes, 2, 6.3, .6)
 enemySpawn = asymptotic2(minutes, 3, 0.5, 1)
 
 fig, (ax1, ax2) = plt.subplots(2, sharex=True)
@@ -86,7 +86,7 @@ ax1.plot(minutes, playerSpeed, 'b-')
 #ax1.plot(minutes, _enemySpeed, 'r:')
 ax1.plot(minutes, enemySpeed, 'r-')
 ax1.set(ylabel='Character Speed', xlabel='Minutes of Play')
-ax1.legend(["Enemy", "Player"],loc="upper left")
+ax1.legend(["Player", "Enemy"],loc="upper left")
 
 #ax2.plot(minutes, _enemySpawn, 'r:')
 ax2.plot(minutes, enemySpawn, 'r-')

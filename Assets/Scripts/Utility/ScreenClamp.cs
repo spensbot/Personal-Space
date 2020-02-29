@@ -20,7 +20,7 @@ public class ScreenClamp : MonoBehaviour
 
     public void clampRigidBodyToScreenBounds(Rigidbody2D rb)
     {
-        Rect playRect = ScreenManager.Instance.playRect;
+        Rect playRect = ScreenManager.Instance.PlayRectUnits;
         Vector2 newPosition;
         newPosition.x = Mathf.Clamp(rb.position.x, playRect.xMin, playRect.xMax);
         newPosition.y = Mathf.Clamp(rb.position.y, playRect.yMin, playRect.yMax);

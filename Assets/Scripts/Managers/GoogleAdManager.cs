@@ -13,15 +13,23 @@ public class GoogleAdManager : Singleton<GoogleAdManager>
     public int adWidthUnscaled { get; private set; }
     public int adHeightUnscaled { get; private set; }
 
+
+    [SerializeField] private string testAndroidAppId = "ca-app-pub-3940256099942544/6300978111";
+    [SerializeField] private string testIphoneAppId = "ca-app-pub-3940256099942544/2934735716";
+
+    [SerializeField] private bool useProductionAds = false;
+    [SerializeField] private string productionAndroidAppId = "ca-app-pub-9013467281341157/6292838546";
+    [SerializeField] private string productionIphoneAppId = "ca-app-pub-9013467281341157/4625656788";
+
     public void Start()
     {
-        #if UNITY_ANDROID
-            string appId = "ca-app-pub-9013467281341157~2744475776";
-        #elif UNITY_IPHONE
-            string appId = "ca-app-pub-3940256099942544~1458002511";
-        #else
-            string appId = "unexpected_platform";
-        #endif
+#if UNITY_ANDROID
+        string appId = "ca-app-pub-9013467281341157~2744475776";
+#elif UNITY_IPHONE
+        string appId = "ca-app-pub-3940256099942544~1458002511";
+#else
+        string appId = "unexpected_platform";
+#endif
 
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(appId);
@@ -33,15 +41,13 @@ public class GoogleAdManager : Singleton<GoogleAdManager>
     {
         attempts += 1;
 
-        //Test adUnitIds from Google.
-        //Real android bannerId: ca-app-pub-9013467281341157/6292838546
-        #if UNITY_ANDROID
-            string adUnitId = "ca-app-pub-3940256099942544/6300978111";
-        #elif UNITY_IPHONE
-            string adUnitId = "ca-app-pub-3940256099942544/2934735716";
-        #else
-            string adUnitId = "unexpected_platform";
-        #endif
+#if UNITY_ANDROID
+        string adUnitId = useProductionAds ? productionAndroidAppId : testAndroidAppId;
+#elif UNITY_IPHONE
+        string adUnitId = useProductionAds ? productionIphoneAppId : testIphoneAppId;
+#else
+        string adUnitId = "unexpected_platform";
+#endif
 
         AdSize adaptiveBannerSize = AdSize.GetPortraitAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
 

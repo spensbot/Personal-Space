@@ -9,52 +9,65 @@ public class ScreenManager : Singleton<ScreenManager>
     [SerializeField] Image joystickDeadzone;
     [SerializeField] Image googleAdDeadzone;
 
-    public Rect screenRectPixels { get; private set; }
-    public Rect screenRect { get; private set; }
-    public Rect playRect;
-    public Rect bombSpawnRect;
-    public float pixelsPerUnit { get; private set; }
-    public float screenHeight { get; private set; } //Unity Units that make up the screen height.
-    public float googleAdHeight { get; private set; }
-    public float joystickHeight { get; private set; }
+    private Rect screenRectUnits;
+    private Rect screenRectPixels;
+    private Rect playRectUnits;
+    private Rect safeAreaPixels = new Rect(0, 0, 0, 0);
+    private float pixelsPerUnit;
 
+    public Rect PlayRectUnits { get { return playRectUnits; } }
 
     private void Start()
     {
-        screenHeight = Camera.main.orthographicSize * 2f;
-        pixelsPerUnit = Screen.height / screenHeight;
-
-        float widthPixels = (int)Screen.width;
-        float heightPixels = (int)Screen.height;
-        float width = widthPixels / pixelsPerUnit;
-        float height = heightPixels / pixelsPerUnit;
-        screenRectPixels = new Rect(-widthPixels / 2, -heightPixels / 2, widthPixels, heightPixels);
-        screenRect = new Rect(-width / 2, -height / 2, width, height);
-
-        AdSize adaptiveBannerSize = AdSize.GetPortraitAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
-        float googleAdHeightPixels = adaptiveBannerSize.Height;
-        googleAdHeight = googleAdHeightPixels / pixelsPerUnit;
-        float deadzoneWidth = googleAdDeadzone.rectTransform.rect.width;
-        Debug.Log("DeadzoneWidth: " + deadzoneWidth);
-        googleAdDeadzone.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, deadzoneWidth * 0.15f);
-
-        joystickHeight = joystickDeadzone.minHeight / pixelsPerUnit;
-
-        playRect = screenRect;
-        playRect.yMin += 4;
-        playRect.yMax -= screenRect.width * 0.15f;
-
-        bombSpawnRect = shrink(playRect, 1f);
-
-        DevManager.Instance.Set(10, $"Screen width: {Screen.width} height: {Screen.height}");
-        DevManager.Instance.Set(11, $"Safe Area width: {Screen.safeArea.width} height: {Screen.safeArea.height}");
-        DevManager.Instance.Set(12, $"Units width: {width} height: {height}");
-        DevManager.Instance.Set(13, $"DPI: {Screen.dpi}");
-        DevManager.Instance.Set(14, $"screenRect yMin: {screenRect.yMin} yMax: {screenRect.yMax}");
-        DevManager.Instance.Set(15, $"PlayRect yMin: {playRect.yMin} yMax: {playRect.yMax}");
+        UpdateScreenDims();
+        UpdateSafeArea(Screen.safeArea);
     }
 
-    private Rect shrink(Rect rect, float amount)
+    private void Update()
+    {
+        if (Screen.safeArea != safeAreaPixels)
+        {
+            UpdateScreenDims();
+            UpdateSafeArea(Screen.safeArea);
+        }
+    }
+
+    private void UpdateSafeArea(Rect newSafeArea)
+    {
+        safeAreaPixels = newSafeArea;
+
+        //Adjust ad deadzone
+        //int adHeightPixels = AdSize.GetPortraitAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth).Height;
+        float safeAreaTopHeightPixels = screenRectPixels.yMax - safeAreaPixels.yMax;
+        float adHeightPixels = safeAreaPixels.width * 0.15f;
+        float totalTopDeadzoneHeightPixels = safeAreaTopHeightPixels + adHeightPixels;
+        googleAdDeadzone.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, totalTopDeadzoneHeightPixels);
+
+        //Adjust joystick deadzone
+        float joystickDeadzoneHeightPixels = 4f / 20f * safeAreaPixels.height;
+        float safeAreaBottomHeightPixels = safeAreaPixels.yMin - screenRectPixels.yMin;
+        float totalBottomDeadzoneHeightPixels = joystickDeadzoneHeightPixels + safeAreaBottomHeightPixels;
+        joystickDeadzone.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, totalBottomDeadzoneHeightPixels);
+
+        //Set Play Area to match
+        playRectUnits = screenRectUnits;
+        playRectUnits.yMax -= totalTopDeadzoneHeightPixels / pixelsPerUnit;
+        playRectUnits.yMax += totalBottomDeadzoneHeightPixels / pixelsPerUnit;
+        playRectUnits.center = Vector2.zero;
+
+        DebugLog();
+    }
+
+    private void UpdateScreenDims()
+    {
+        float screenHeightUnits = Camera.main.orthographicSize * 2f;
+        pixelsPerUnit = Screen.height / screenHeightUnits;
+
+        screenRectPixels = new Rect(0f, 0f, Screen.width, Screen.height);
+        screenRectUnits = new Rect(0f, 0f, Screen.width/pixelsPerUnit, Screen.height/pixelsPerUnit);
+    }
+
+    public static Rect Shrink(Rect rect, float amount)
     {
         rect.xMin += amount;
         rect.xMax -= amount;
@@ -65,8 +78,19 @@ public class ScreenManager : Singleton<ScreenManager>
 
     private void OnDrawGizmos()
     {
-        Vector3 center = playRect.center;
-        Vector3 size = new Vector3(playRect.width, playRect.height, 0);
+        Vector3 center = playRectUnits.center;
+        Vector3 size = new Vector3(playRectUnits.width, playRectUnits.height, 0);
         Gizmos.DrawWireCube(center, size);
+    }
+
+    private void DebugLog()
+    {
+        DevManager.Instance.Set(10, $"Screen width: {Screen.width} height: {Screen.height}");
+        DevManager.Instance.Set(11, $"Safe Area yMax: {Screen.safeArea.yMax} yMin: {Screen.safeArea.yMin}");
+        DevManager.Instance.Set(12, $"Screen yMax: {screenRectPixels.yMax} yMin: {screenRectPixels.yMin}");
+        DevManager.Instance.Set(13, $"Play Area xMax: {playRectUnits.xMax} xMin: {playRectUnits.xMin}");
+        DevManager.Instance.Set(14, $"Play Area yMax: {playRectUnits.yMax} yMin: {playRectUnits.yMin}");
+        DevManager.Instance.Set(15, $"Screen Area xMax: {screenRectUnits.xMax} xMin: {screenRectUnits.xMin}");
+        DevManager.Instance.Set(16, $"Screen Area yMax: {screenRectUnits.yMax} yMin: {screenRectUnits.yMin}");
     }
 }

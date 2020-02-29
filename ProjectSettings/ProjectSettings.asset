@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: Sailing To Mars
+  companyName: Spenser Saling
   productName: Personal Space
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -64,7 +64,7 @@ PlayerSettings:
   preserveFramebufferAlpha: 0
   disableDepthAndStencilBuffers: 0
   androidStartInFullscreen: 1
-  androidRenderOutsideSafeArea: 0
+  androidRenderOutsideSafeArea: 1
   androidUseSwappy: 0
   androidBlitType: 0
   defaultIsNativeResolution: 1
@@ -120,7 +120,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.1
+  bundleVersion: 1.0
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -181,7 +181,7 @@ PlayerSettings:
   keepLoadedShadersAlive: 0
   StripUnusedMeshComponents: 1
   VertexChannelCompressionMask: 4054
-  iPhoneSdkVersion: 988
+  iPhoneSdkVersion: 989
   iOSTargetOSVersionString: 10.0
   tvOSSdkVersion: 0
   tvOSRequireExtendedGameController: 0
@@ -280,7 +280,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: de0cc78a4ef5648f78fdae34ba7e772a, type: 3}
+      m_Icon: {fileID: 2800000, guid: 3699bbb2f777b4e3e8d6e57c529f2996, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
@@ -360,8 +360,8 @@ PlayerSettings:
       m_Kind: 1
       m_SubKind: 
     - m_Textures:
-      - {fileID: 2800000, guid: 4621c40d25d2c42929278eafb49a2f5e, type: 3}
-      - {fileID: 2800000, guid: 4373fdbd1a1674b208ca6451351f386b, type: 3}
+      - {fileID: 2800000, guid: 3e74920eda22b440380c4e1a6dab2833, type: 3}
+      - {fileID: 2800000, guid: dbe095d4f2d244ba28169ad5ee74ecec, type: 3}
       m_Width: 432
       m_Height: 432
       m_Kind: 2
@@ -391,10 +391,113 @@ PlayerSettings:
       m_Height: 81
       m_Kind: 2
       m_SubKind: 
+  - m_BuildTarget: iPhone
+    m_Icons:
+    - m_Textures:
+      - {fileID: 0}
+      m_Width: 1024
+      m_Height: 1024
+      m_Kind: 4
+      m_SubKind: App Store
+    - m_Textures: []
+      m_Width: 60
+      m_Height: 60
+      m_Kind: 2
+      m_SubKind: iPhone
+    - m_Textures: []
+      m_Width: 40
+      m_Height: 40
+      m_Kind: 2
+      m_SubKind: iPhone
+    - m_Textures: []
+      m_Width: 40
+      m_Height: 40
+      m_Kind: 2
+      m_SubKind: iPad
+    - m_Textures: []
+      m_Width: 20
+      m_Height: 20
+      m_Kind: 2
+      m_SubKind: iPad
+    - m_Textures: []
+      m_Width: 87
+      m_Height: 87
+      m_Kind: 1
+      m_SubKind: iPhone
+    - m_Textures: []
+      m_Width: 58
+      m_Height: 58
+      m_Kind: 1
+      m_SubKind: iPhone
+    - m_Textures: []
+      m_Width: 29
+      m_Height: 29
+      m_Kind: 1
+      m_SubKind: iPhone
+    - m_Textures: []
+      m_Width: 58
+      m_Height: 58
+      m_Kind: 1
+      m_SubKind: iPad
+    - m_Textures: []
+      m_Width: 29
+      m_Height: 29
+      m_Kind: 1
+      m_SubKind: iPad
+    - m_Textures: []
+      m_Width: 120
+      m_Height: 120
+      m_Kind: 3
+      m_SubKind: iPhone
+    - m_Textures: []
+      m_Width: 80
+      m_Height: 80
+      m_Kind: 3
+      m_SubKind: iPhone
+    - m_Textures: []
+      m_Width: 80
+      m_Height: 80
+      m_Kind: 3
+      m_SubKind: iPad
+    - m_Textures: []
+      m_Width: 40
+      m_Height: 40
+      m_Kind: 3
+      m_SubKind: iPad
+    - m_Textures:
+      - {fileID: 0}
+      m_Width: 180
+      m_Height: 180
+      m_Kind: 0
+      m_SubKind: iPhone
+    - m_Textures:
+      - {fileID: 0}
+      m_Width: 120
+      m_Height: 120
+      m_Kind: 0
+      m_SubKind: iPhone
+    - m_Textures: []
+      m_Width: 167
+      m_Height: 167
+      m_Kind: 0
+      m_SubKind: iPad
+    - m_Textures: []
+      m_Width: 152
+      m_Height: 152
+      m_Kind: 0
+      m_SubKind: iPad
+    - m_Textures: []
+      m_Width: 76
+      m_Height: 76
+      m_Kind: 0
+      m_SubKind: iPad
   m_BuildTargetBatching: []
   m_BuildTargetGraphicsAPIs:
   - m_BuildTarget: AndroidPlayer
     m_APIs: 150000000b000000
+    m_Automatic: 0
+  - m_BuildTarget: iOSSupport
+    m_APIs: 0800000010000000
     m_Automatic: 0
   m_BuildTargetVRSettings: []
   openGLRequireES31: 0

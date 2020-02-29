@@ -133,14 +133,14 @@ public class GameManager : Singleton<GameManager>
         switch (state)
         {
             case GameState.BOOT:
-                TimeManager.Instance.SetTimeScale(0.0f);
+                TimeManager.Instance.mainTimeScale=0f;
                 updateHighScore();
                 updateTotalPlayTime();
                 DifficultyManager.Instance.ModUpdate(0f);
          
                 break;
             case GameState.PLAY:
-                TimeManager.Instance.SetTimeScale(1.0f);
+                TimeManager.Instance.mainTimeScale=1f;
                 updateScore(0);
                 updatePlayTime(0f);
                 break;

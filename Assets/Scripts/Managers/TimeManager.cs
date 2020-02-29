@@ -8,7 +8,24 @@ public class TimeManager: Singleton<TimeManager>
     //We need to update this value when we slow down the game to prevent jitter.
     private readonly float dtFixed = 0.02f;
 
-    public void SetTimeScale(float timeScale)
+    public float mainTimeScale = 0f;
+    public float debugTimeScale = 1f;
+    public float effectTimeScale = 1f;
+
+    private void Start()
+    {
+        effectTimeScale = 1f;
+    }
+
+    private void Update()
+    {
+        SetTimeScale(mainTimeScale * debugTimeScale * effectTimeScale);
+        DevManager.Instance.Set(20, "Main Time Scale: " + mainTimeScale);
+        DevManager.Instance.Set(21, "Debug Time Scale: " + debugTimeScale);
+        DevManager.Instance.Set(22, "Effect Time Scale: " + effectTimeScale);
+    }
+
+    private void SetTimeScale(float timeScale)
     {
         Time.timeScale = timeScale;
         Time.fixedDeltaTime = dtFixed * timeScale;
@@ -21,10 +38,15 @@ public class TimeManager: Singleton<TimeManager>
                 "to", 1.0f,
                 "time", duration, //0.4
                 "onupdatetarget", gameObject,
-                "onupdate", "SetTimeScale",
+                "onupdate", "SetEffectTimeScale",
                 "easetype", iTween.EaseType.easeOutQuad
             )
         );
+    }
+
+    private void SetEffectTimeScale(float newEffectTimeScale)
+    {
+        effectTimeScale = newEffectTimeScale;
     }
 
     public void ClearEffects()
