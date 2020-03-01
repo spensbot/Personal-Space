@@ -50,7 +50,7 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         if (DevManager.Instance.SpawnEnemies)
         {
-            Vector3 spawnPoint = GetRandomPointAlongRect(ScreenManager.Instance.PlayRectUnits);
+            Vector3 spawnPoint = GetRandomPointAlongRect(ScreenManager.Instance.PlayRectU);
             Debug.Log(spawnPoint);
             GameObject foreshadowInstance = Instantiate(foreshadow, spawnPoint, Quaternion.identity);
             ForeshadowController foreshadowController = foreshadowInstance.GetComponent<ForeshadowController>();
@@ -60,7 +60,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
     void SpawnGate()
     {
-        Rect bombSpawnRect = ScreenManager.Shrink(ScreenManager.Instance.PlayRectUnits, 1f);
+        Rect bombSpawnRect = ScreenManager.Shrink(ScreenManager.Instance.PlayRectU, 1f);
         Vector3 gateSpawnPoint = GetRandomPointInsideRect(bombSpawnRect);
         GameObject gateInstance = Instantiate(gate, gateSpawnPoint, Quaternion.identity) as GameObject;
     }

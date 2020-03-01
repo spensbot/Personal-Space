@@ -20,9 +20,9 @@ public class TimeManager: Singleton<TimeManager>
     private void Update()
     {
         SetTimeScale(mainTimeScale * debugTimeScale * effectTimeScale);
-        DevManager.Instance.Set(20, "Main Time Scale: " + mainTimeScale);
-        DevManager.Instance.Set(21, "Debug Time Scale: " + debugTimeScale);
-        DevManager.Instance.Set(22, "Effect Time Scale: " + effectTimeScale);
+        DevManager.Instance.Set(25, "Main Time Scale: " + mainTimeScale);
+        DevManager.Instance.Set(26, "Debug Time Scale: " + debugTimeScale);
+        DevManager.Instance.Set(27, "Effect Time Scale: " + effectTimeScale);
     }
 
     private void SetTimeScale(float timeScale)

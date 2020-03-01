@@ -49,12 +49,6 @@ public class GoogleAdManager : Singleton<GoogleAdManager>
         string adUnitId = "unexpected_platform";
 #endif
 
-        AdSize adaptiveBannerSize = AdSize.GetPortraitAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
-
-        Debug.Log("Screen.widht: " + Screen.width);
-        Debug.Log("Adsize.Fullwidth: " + AdSize.FullWidth);
-        Debug.Log("Google Device Scale: " + MobileAds.Utils.GetDeviceScale());
-
         // Clean up banner ad before creating a new one.
         if (this.bannerView != null)
         {
@@ -62,7 +56,7 @@ public class GoogleAdManager : Singleton<GoogleAdManager>
         }
 
         // Create a 320x50 banner at the top of the screen.
-        this.bannerView = new BannerView(adUnitId, adaptiveBannerSize, AdPosition.Top);
+        this.bannerView = new BannerView(adUnitId, getBannerSize(), AdPosition.Top);
 
         //---------     AD LIFECYCLE HOOKS     ------------------
 
@@ -84,6 +78,24 @@ public class GoogleAdManager : Singleton<GoogleAdManager>
         this.bannerView.LoadAd(request);
 
         DevManager.Instance.Set(20, $"Banner Requested {this.attempts} times");
+    }
+
+    public static AdSize getBannerSize()
+    {
+        AdSize bannerSize = AdSize.GetPortraitAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
+        Debug.Log("FullWidth: " + AdSize.FullWidth);
+        Debug.Log("Banner Width: " + bannerSize.Width);
+        Debug.Log("Banner Height: " + bannerSize.Height);
+        Debug.Log("DEVICE SCALE: " + MobileAds.Utils.GetDeviceScale());
+        DevManager.Instance.Set(22, "Banner Width: " + bannerSize.Width);
+        DevManager.Instance.Set(23, "Banner Height: " + bannerSize.Height);
+        DevManager.Instance.Set(24, "Device Scale: " + MobileAds.Utils.GetDeviceScale());
+        return bannerSize;
+    }
+
+    public static int getBannerHeight()
+    {
+        return getBannerSize().Height;
     }
 
     public void HandleOnAdLoaded(object sender, EventArgs args)
