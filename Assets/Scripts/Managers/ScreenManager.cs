@@ -111,45 +111,38 @@ public class ScreenManager : Singleton<ScreenManager>
         Rect screenRectPx = new Rect(0f, 0f, Screen.width, Screen.height);
         Rect safeRectPx = Screen.safeArea;
 
-        float topDzPx = GetTopDzPx(screenRectPx, safeRectPx);
-        float bottomDzPx = GetBottomDzPx(screenRectPx, safeRectPx);
-
-        
-
-        float playAreaPixels = playRectPx.height * playRectPx.width;
-
-        float pxPerU = Mathf.Pow(playAreaPixels, 0.5f) / Mathf.Pow(targetPlayAreaUnits, 0.5f);
-
         float refRatio = referenceScale.y / screenRectPx.height;
+
+        float topDzPx = GetTopDzPx(screenRectPx, safeRectPx);
+        float bottomDzPx = GetBottomDzPx(screenRectPx, safeRectPx, refRatio);
+
+        Rect playRectPx = screenRectPx;
+        //I Decided to move the play rect's center to (0,0) to align with game coordinates
+        playRectPx.center = Vector2.zero;
+        playRectPx.yMax -= topDzPx;
+        playRectPx.yMin += bottomDzPx;
+
+        float pxPerU = GetPxPerU(playRectPx);
 
         screenArea = new MultiUnitRect(screenRectPx, ScreenUnits.pixels, pxPerU, refRatio);
         safeArea = new MultiUnitRect(safeRectPx, ScreenUnits.pixels, pxPerU, refRatio);
         playArea = new MultiUnitRect(playRectPx, ScreenUnits.pixels, pxPerU, refRatio);
 
+        //Update Camera
         Camera.main.orthographicSize = screenArea.units.height / 2f;
 
-        screenRectU = new Rect(0f, 0f, Screen.width / pxPerU, Screen.height / pxPerU);
-        screenRectU.center = Vector2.zero;
+        //Update UI
+        topDz.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, topDzPx * refRatio);
+        bottomDz.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, bottomDzPx * refRatio);
 
-        //Set Play Area to match
-        //playRectU = screenRectU;
-        //playRectU.yMax -= topDzPx / pxPerU;
-        //playRectU.yMin += bottomDzPx / pxPerU;
-
-        topDz.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, convertToReference(topDzPx));
-        bottomDz.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, convertToReference(bottomDzPx));
-
-        LogRects();
-        DevManager.Instance.Set(9, $"screenHeightU: {screenHeightU}");
-        DevManager.Instance.Set(18, "Play Area Units: " + playRectU.width * playRectU.height);
+        Log(5);
     }
 
-    private Rect CreatePlayRectPx(Rect screenRectPx, float topDzPx, float bottomDzPx)
+    private float GetPxPerU(Rect playRectPx)
     {
-        Rect playRectPx = screenRectPx;
-        playRectPx.center = Vector2.zero;
-        playRectPx.yMax -= topDzPx;
-        playRectPx.yMin += bottomDzPx;
+        float playAreaPixels = playRectPx.height * playRectPx.width;
+
+        return Mathf.Pow(playAreaPixels, 0.5f) / Mathf.Pow(targetPlayAreaUnits, 0.5f);
     }
 
     private float GetTopDzPx(Rect screenRectPx, Rect safeAreaPx)
@@ -163,23 +156,11 @@ public class ScreenManager : Singleton<ScreenManager>
         return safeAreaTopPx + adHeightPx;
     }
 
-    private float GetBottomDzPx(Rect screenRectPx, Rect safeAreaPx)
+    private float GetBottomDzPx(Rect screenRectPx, Rect safeAreaPx, float refRatio)
     {
         float safeAreaBottomPx = safeAreaPx.yMin - screenRectPx.yMin;
-        return joystickDzHeightRefPx.height / GetRefRatio() + safeAreaBottomPx;
+        return joystickDzHeightRefPx.height / refRatio + safeAreaBottomPx;
     }
-
-    //private float convertToReference(float num)
-    //{
-    //    float ratio = referenceScale.y / screenRectPx.height;
-    //    return num * ratio;
-    //}
-
-    //private float convertFromReference(float num)
-    //{
-    //    float ratio = screenRectPx.height / referenceScale.y;
-    //    return num * ratio;
-    //}
 
     //--------------    SCREEN RELATED UTILS     --------------------
 
@@ -195,18 +176,19 @@ public class ScreenManager : Singleton<ScreenManager>
 
     //--------------------     DEBUGGING     ------------------------
 
-    private void LogRects()
+    private void Log(int startLine)
     {
-        LogPx(10, "screenRectPx", screenRectPx);
-        LogPx(12, "safeAreaPx", safeRectPx);
-        LogU(14, "screenRectU", screenRectU);
-        LogU(16, "playRectU", playRectU);
+        LogPx(startLine, "Screen Area Pixels", screenArea.pixels);
+        LogPx(startLine + 2, "Safe Area Pixels", safeArea.pixels);
+        LogU(startLine + 4, "Screen Area Units", screenArea.units);
+        LogU(startLine + 6, "Play Area Units", playArea.units);
+        DevManager.Instance.Set(startLine + 8, "Play Area (Units^2): " + playArea.units.width * playArea.units.height);
     }
 
     private void OnDrawGizmos()
     {
-        Vector3 center = playRectU.center;
-        Vector3 size = new Vector3(playRectU.width, playRectU.height, 0);
+        Vector3 center = playArea.units.center;
+        Vector3 size = new Vector3(playArea.units.width, playArea.units.height, 0);
         Gizmos.DrawWireCube(center, size);
     }
 

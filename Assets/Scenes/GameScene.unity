@@ -7087,8 +7087,8 @@ MonoBehaviour:
   approachPlayerSpeed: 10.5
   approachEnemySpeed: 6
   approachEnemySpawn: 0.5
-  powPlayerSpeed: 0.6
-  powEnemySpeed: 0.6
+  powPlayerSpeed: 0.55
+  powEnemySpeed: 0.55
   powEnemySpawn: 1
 --- !u!4 &1479251123
 Transform:
