@@ -35,12 +35,15 @@ public class DifficultyManager : Singleton<DifficultyManager>
         enemySpawnTime = Asymptotic(elapsedMinutes, startEnemySpawn, approachEnemySpawn, powEnemySpawn);
         gateSpawnTime = startGateSpawn;
 
-        //DEBUG VALUES
-        DevManager.Instance.Set(0, $"Elapsed Minutes: {elapsedMinutes}");
-        DevManager.Instance.Set(1, $"Player Speed: {playerSpeed}");
-        DevManager.Instance.Set(2, $"Enemy Speed: {enemySpeed}");
-        DevManager.Instance.Set(3, $"Enemy Spawn Time: {enemySpawnTime}");
-        DevManager.Instance.Set(4, $"Gate Spawn Time: {gateSpawnTime}");
+        Log(30, elapsedMinutes);
+    }
+
+    private void Log(int startLine, float elapsedMinutes) {
+        DevManager.Instance.Set(startLine, $"Elapsed Minutes: {elapsedMinutes}");
+        DevManager.Instance.Set(startLine + 1, $"Player Speed: {playerSpeed}");
+        DevManager.Instance.Set(startLine + 2, $"Enemy Speed: {enemySpeed}");
+        DevManager.Instance.Set(startLine + 3, $"Enemy Spawn Time: {enemySpawnTime}");
+        DevManager.Instance.Set(startLine + 4, $"Gate Spawn Time: {gateSpawnTime}");
     }
 
     //Returns values that approach "asymptote" as x -> infinity
