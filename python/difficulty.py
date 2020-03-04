@@ -14,13 +14,13 @@
 # Beginners should rarely if ever make it past the 30 second mark
 
 # 1 minute
-# People should start surviving 1 minute after a total of 10 minutes play.
+# People should start surviving 1 minute after a total of 10 minutes experience.
 
 # 2 minutes
-# Reached after 1 hour of play.
+# Reached after 1 hour of experience.
 
 # 3 minutes
-# Reached after many (10?) hours of play.
+# Reached after many (10?) hours of experience.
 
 # 5 minutes
 # Only incredibly skilled players should reach 5 minutes. And even then only on their best games.
@@ -39,7 +39,6 @@ font = {'family' : 'normal',
 
 matplotlib.rc('font', **font)
 
-
 minutes = np.arange(0, 5, 0.01)
 
 #---------------     ORIGINAL     --------------
@@ -56,9 +55,9 @@ _modEnemySpawn = -0.2 #change per minute
 def linear(x, m, b):
   return m * x + b
 
-_playerSpeed = linear(minutes, _modPlayerSpeed, _startPlayerSpeed)
-_enemySpeed = linear(minutes, _modEnemySpeed, _startEnemySpeed)
-_enemySpawn = linear(minutes, _modEnemySpawn, _startEnemySpawn)
+# _playerSpeed = linear(minutes, _modPlayerSpeed, _startPlayerSpeed)
+# _enemySpeed = linear(minutes, _modEnemySpeed, _startEnemySpeed)
+# _enemySpawn = linear(minutes, _modEnemySpawn, _startEnemySpawn)
 
 #---------------     PROPOSED     -----------------
 
@@ -75,20 +74,26 @@ def asymptotic2(x, initY, asymptote, pow):
 # enemySpawn = asymptotic(minutes, 0.5, 2, 1, 1)
 
 # (x, initY, asymptote, pow)
-playerSpeed = asymptotic2(minutes, 5, 11, .6)
-enemySpeed = asymptotic2(minutes, 2, 6.3, .6)
-enemySpawn = asymptotic2(minutes, 3, 0.5, 1)
+playerSpeed = asymptotic2(minutes, 5, 10.5, .65)
+enemySpeed = asymptotic2(minutes, 2, 6, .65)
+enemySpawn = asymptotic2(minutes, 3, 0.5, 1.2)
+
+# Old Values
+_playerSpeed = asymptotic2(minutes, 5, 11, .7)
+_enemySpeed = asymptotic2(minutes, 2, 6.5, .7)
+_enemySpawn = asymptotic2(minutes, 3, 0.5, 1.0)
 
 fig, (ax1, ax2) = plt.subplots(2, sharex=True)
 fig.suptitle('Difficulty Parameters over Time')
-#ax1.plot(minutes, _playerSpeed, 'b:')
+
 ax1.plot(minutes, playerSpeed, 'b-')
-#ax1.plot(minutes, _enemySpeed, 'r:')
 ax1.plot(minutes, enemySpeed, 'r-')
+ax1.plot(minutes, _playerSpeed, 'b:')
+ax1.plot(minutes, _enemySpeed, 'r:')
 ax1.set(ylabel='Character Speed', xlabel='Minutes of Play')
 ax1.legend(["Player", "Enemy"],loc="upper left")
 
-#ax2.plot(minutes, _enemySpawn, 'r:')
+ax2.plot(minutes, _enemySpawn, 'r:')
 ax2.plot(minutes, enemySpawn, 'r-')
 ax2.set(ylabel='Enemy Spawn Time', xlabel='Minutes of Play')
 ax1.grid(b=True, which='both', axis='both')

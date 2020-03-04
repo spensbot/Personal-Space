@@ -7087,9 +7087,9 @@ MonoBehaviour:
   approachPlayerSpeed: 10.5
   approachEnemySpeed: 6
   approachEnemySpawn: 0.5
-  powPlayerSpeed: 0.55
-  powEnemySpeed: 0.55
-  powEnemySpawn: 1
+  powPlayerSpeed: 0.65
+  powEnemySpeed: 0.65
+  powEnemySpawn: 1.2
 --- !u!4 &1479251123
 Transform:
   m_ObjectHideFlags: 0
@@ -12966,7 +12966,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93d988f9a504b4cf9ab9965a3fb2a05d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  development: 1
+  development: 0
   showDebugText: 1
   spawnEnemies: 1
   allowPlayerDeath: 1

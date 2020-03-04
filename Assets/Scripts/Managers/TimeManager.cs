@@ -8,13 +8,17 @@ public class TimeManager: Singleton<TimeManager>
     //We need to update this value when we slow down the game to prevent jitter.
     private readonly float dtFixed = 0.02f;
 
+    [HideInInspector]
     public float mainTimeScale = 0f;
+    [HideInInspector]
     public float debugTimeScale = 1f;
+    [HideInInspector]
     public float effectTimeScale = 1f;
 
     private void Start()
     {
         effectTimeScale = 1f;
+        debugTimeScale = 1f;
     }
 
     private void Update()
