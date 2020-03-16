@@ -74,13 +74,13 @@ def asymptotic2(x, initY, asymptote, pow):
 # enemySpawn = asymptotic(minutes, 0.5, 2, 1, 1)
 
 # (x, initY, asymptote, pow)
-playerSpeed = asymptotic2(minutes, 5, 10.5, .65)
-enemySpeed = asymptotic2(minutes, 2, 6, .65)
+playerSpeed = asymptotic2(minutes, 5, 10.5, .55)
+enemySpeed = asymptotic2(minutes, 2, 6, .55)
 enemySpawn = asymptotic2(minutes, 3, 0.5, 1.2)
 
 # Old Values
-_playerSpeed = asymptotic2(minutes, 5, 11, .7)
-_enemySpeed = asymptotic2(minutes, 2, 6.5, .7)
+_playerSpeed = asymptotic2(minutes, 5, 10.5, .65)
+_enemySpeed = asymptotic2(minutes, 2, 6, .65)
 _enemySpawn = asymptotic2(minutes, 3, 0.5, 1.0)
 
 fig, (ax1, ax2) = plt.subplots(2, sharex=True)
