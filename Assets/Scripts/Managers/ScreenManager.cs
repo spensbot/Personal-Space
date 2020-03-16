@@ -69,7 +69,7 @@ public class ScreenManager : Singleton<ScreenManager>
     [SerializeField] Image topDz;
     
     private Vector2 referenceScale = new Vector2(1080, 1920);
-    private float targetPlayAreaUnits = 15f * 12f; //Units Squared
+    private float targetPlayAreaUnits = 200; //Units Squared
 
     //private Rect screenRectPx;
     //private Rect safeRectPx;
@@ -114,13 +114,11 @@ public class ScreenManager : Singleton<ScreenManager>
         float refRatio = referenceScale.y / screenRectPx.height;
 
         float topDzPx = GetTopDzPx(screenRectPx, safeRectPx);
-        float bottomDzPx = GetBottomDzPx(screenRectPx, safeRectPx, refRatio);
 
         Rect playRectPx = screenRectPx;
         //I Decided to move the play rect's center to (0,0) to align with game coordinates
         playRectPx.center = Vector2.zero;
         playRectPx.yMax -= topDzPx;
-        playRectPx.yMin += bottomDzPx;
 
         float pxPerU = GetPxPerU(playRectPx);
 
@@ -133,7 +131,6 @@ public class ScreenManager : Singleton<ScreenManager>
 
         //Update UI
         topDz.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, topDzPx * refRatio);
-        bottomDz.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, bottomDzPx * refRatio);
 
         Log(5);
     }

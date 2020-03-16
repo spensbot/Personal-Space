@@ -24,14 +24,15 @@ public struct Input2D
 
 public class InputManager : Singleton<InputManager>
 {
-    FixedJoystick joystick;
+    //FixedJoystick joystick;
+
+    [SerializeField] DynamicJoystick joystick;
 
     public Input2D Input { get; private set; }
 
     // Start is called before the first frame update
     void Start()
     {
-        joystick = GameObject.Find("Joystick").GetComponent<FixedJoystick>();
         Input = new Input2D(Vector2.zero);
     }
 

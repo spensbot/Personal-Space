@@ -60,7 +60,15 @@ public class SpawnManager : Singleton<SpawnManager>
 
     void SpawnGate()
     {
-        Rect bombSpawnRect = ScreenManager.Shrink(ScreenManager.Instance.PlayRectU, 1f);
+        //The area where bombs can spawn is taken from the Screen Manager's Play Area
+        Rect bombSpawnRect = ScreenManager.Instance.PlayRectU;
+
+        //Shink the spawn area so bombs don't spawn too close to the edge.
+        bombSpawnRect = ScreenManager.Shrink(bombSpawnRect, 1f);
+
+        //Remove the bottom 25% of the play area so bombs don't spawn under player's finger
+        bombSpawnRect.yMin += bombSpawnRect.height * 0.25f;
+
         Vector3 gateSpawnPoint = GetRandomPointInsideRect(bombSpawnRect);
         GameObject gateInstance = Instantiate(gate, gateSpawnPoint, Quaternion.identity) as GameObject;
     }
