@@ -41,7 +41,7 @@ matplotlib.rc('font', **font)
 
 minutes = np.arange(0, 5, 0.01)
 
-#---------------     ORIGINAL     --------------
+# ---------------     V1     --------------
 
 _startPlayerSpeed = 6 #units per second
 _startEnemySpeed = 3 #units per second
@@ -59,24 +59,38 @@ def linear(x, m, b):
 # _enemySpeed = linear(minutes, _modEnemySpeed, _startEnemySpeed)
 # _enemySpawn = linear(minutes, _modEnemySpawn, _startEnemySpawn)
 
-#---------------     PROPOSED     -----------------
+# ---------------     V2     --------------
 
 def asymptotic(x, asymptote, xShift, yScale, power):
   return yScale * 1/(x + xShift)**power + asymptote
-
-def asymptotic2(x, initY, asymptote, pow):
-  scale = initY - asymptote
-  return scale / (x + 1) ** pow + asymptote
 
 # # (x, asymptote, xShift, yScale, power)
 # playerSpeed = asymptotic(minutes, 10, 1.5, -4, .75)
 # enemySpeed = asymptotic(minutes, 6, 1.5, -3, .75)
 # enemySpawn = asymptotic(minutes, 0.5, 2, 1, 1)
 
+
+
+
+
+
+# ---------------     V3     -----------------
+
+def asymptotic2(x, initY, asymptote, pow):
+  scale = initY - asymptote
+  return scale / (x + 1) ** pow + asymptote
+
 # (x, initY, asymptote, pow)
 playerSpeed = asymptotic2(minutes, 5, 10.5, .55)
 enemySpeed = asymptotic2(minutes, 2, 6, .55)
 enemySpawn = asymptotic2(minutes, 3, 0.5, 1.2)
+
+
+
+
+
+
+
 
 # Old Values
 _playerSpeed = asymptotic2(minutes, 5, 10.5, .65)
